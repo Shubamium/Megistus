@@ -1,10 +1,11 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
+import App from './CardManager.jsx'
 import './index.css'
+import CardManager from './CardManager.jsx'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <CardManager />
   </React.StrictMode>,
 )
