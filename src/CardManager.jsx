@@ -7,6 +7,15 @@ const StyledCard = styled.div`
     background-color: #fbc4f1;
     aspect-ratio: 1/1;
     min-height: 150px;
+
+    display:flex;
+    justify-content:center;
+    align-items: center;
+    border-radius: 1em;
+
+    &:hover{
+      box-shadow: 0px 0px 14px #00000087;
+    }
 `
 
 const StyledCards = styled.div`
@@ -172,7 +181,7 @@ function Card({isVisible, onReveal,blockReveal,cardId,isSolved,slotState}){
     setSlotState(_slotState);
   },[slotState])
   
-  const renderCard = [
+  const renderCard =  [
     <div className='card_closed'>
         <p>Card Closed</p>
     </div>,
