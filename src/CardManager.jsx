@@ -92,6 +92,7 @@ function CardManager() {
 
   const [selectedSlot,setSelectedSlot] = useState([]);
   
+  const clickDelay = 500;
 
   function addToSelectedSlot(id,card){
     // If Two Cards already selected then don't add anymore card
@@ -116,7 +117,7 @@ function CardManager() {
   },[selectedSlot])
 
 
-  function compareCards(){
+  async function compareCards(){
     console.log('comparing Card');
     if(selectedSlot[0].id === selectedSlot[1].id){
       // Card is the same
@@ -124,15 +125,20 @@ function CardManager() {
       selectedSlot.forEach((slot)=>{
         setCardState(slot.index,SLOT_STATE.SOLVED);
       })
+      setSelectedSlot([]);
+
     }else{
       // Card is not 
       // Flip both again
-      selectedSlot.forEach((slot)=>{
+      setTimeout(()=>{
+        selectedSlot.forEach((slot)=>{
           setCardState(slot.index,SLOT_STATE.CLOSED);
-      })
+        })
+        setSelectedSlot([]);
+      },clickDelay)
     }
     // Clear Selected
-    setSelectedSlot([]);
+    // setSelectedSlot([]);
   }
   function renderCards(){ 
     return slots.map((slot,index)=> {
@@ -150,7 +156,9 @@ function CardManager() {
         setCardState(index,slot.slotState === SLOT_STATE.OPEN ? SLOT_STATE.CLOSED : SLOT_STATE.OPEN);
       }
       const isSolved = slot.slotState === SLOT_STATE.SOLVED;
-      return <Card onReveal={handleReveal} slotState={slot.slotState} cardId={slot.id}></Card>
+      const isSelectedAlready = slot.slotState === SLOT_STATE.SELECTED;
+      const selectedSlotIsFull = selectedSlot.length >= 2;
+      return <Card onReveal={handleReveal} slotState={slot.slotState} blockReveal={isSelectedAlready || selectedSlotIsFull} cardId={slot.id}></Card>
     })
   }
 // isVisible={slot.slotState === 1} 
