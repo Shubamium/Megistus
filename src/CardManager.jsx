@@ -11,10 +11,17 @@ const StyledCard = styled.div`
     display:flex;
     justify-content:center;
     align-items: center;
+    flex-direction:column;
     border-radius: 1em;
-
+    text-align: center;
     &:hover{
       box-shadow: 0px 0px 14px #00000087;
+    }
+    & h2{
+      margin: 0;
+    }
+    & p {
+      margin: 0;
     }
 `
 
@@ -143,10 +150,10 @@ function CardManager() {
         setCardState(index,slot.slotState === SLOT_STATE.OPEN ? SLOT_STATE.CLOSED : SLOT_STATE.OPEN);
       }
       const isSolved = slot.slotState === SLOT_STATE.SOLVED;
-      return <Card onReveal={handleReveal} slotState={slot.slotState} isVisible={slot.slotState === 1} blockReveal={slot.slotState === SLOT_STATE.SELECTED || isSolved || selectedSlot && selectedSlot.length >= 2}  isSolved={isSolved} cardId={slot.id}></Card>
+      return <Card onReveal={handleReveal} slotState={slot.slotState} cardId={slot.id}></Card>
     })
   }
-
+// isVisible={slot.slotState === 1} 
   function setCardState(id,toSet){
     setSlots(prev => {
       const updatedSlot = prev.map(prevMap => prevMap);
@@ -193,22 +200,27 @@ function Card({isVisible, onReveal,blockReveal,cardId,isSolved,slotState}){
     <div className="card_opened">
       <h2>Card {cardId || 0}</h2>
       <p>Card Solved</p>
+    </div>,
+    <div className="card_selected">
+      <h2>Card {cardId || 0}</h2>
+      <p>Selected</p>
     </div>
   ];
-
-
+  
+  
   const handleOnClick = ()=>{
     if(blockReveal)return;
     onReveal && onReveal();setVisible(prev => !prev);
   };
 
-  let toRenderIndex = visible ? 1 : 0;
-  if(isSolved === true){
-    toRenderIndex = SLOT_STATE.SOLVED;
-  }
+  let toRenderIndex = slotState === 0 || slotState;
+  // if(isSolved === true){
+  //   toRenderIndex = SLOT_STATE.SOLVED;
+  // }
   return (
     <StyledCard onClick={handleOnClick}>
-        {renderCard[toRenderIndex]}
+        <p>{slotState}</p>
+        {renderCard[slotState]}
     </StyledCard>
   )
 }
