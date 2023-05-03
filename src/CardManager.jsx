@@ -36,8 +36,8 @@ const StyledCards = styled.div`
   justify-content: center;
  */
   display:  grid;
-  grid-template-columns: repeat(3,1fr);
-  max-width: 500px;
+  grid-template-columns: repeat(${props => props.row || '3'},1fr);
+  max-width: 80vh;
   margin: 1em 0;
 `
 
@@ -48,7 +48,7 @@ const SLOT_STATE = {
   SELECTED:3
 }
 
-function CardManager() {
+function CardManager({onWin}) {
 
   const defaultSlot = [
     {
@@ -86,13 +86,27 @@ function CardManager() {
       id:44,
       slotState:0
     }
+    ,{
+      id:21,
+      slotState:0
+    }
+    ,{
+      id:21,
+      slotState:0
+    }
+    ,{
+      id:24,
+      slotState:0
+    }
+    
     
   ]
   const [slots,setSlots] = useState(defaultSlot);
 
   const [selectedSlot,setSelectedSlot] = useState([]);
+  const [row,setRow] = useState(3);
   
-  const clickDelay = 500;
+  const clickDelay = 1000;
 
   function addToSelectedSlot(id,card){
     // If Two Cards already selected then don't add anymore card
@@ -110,6 +124,17 @@ function CardManager() {
     
   }
 
+  useEffect(()=>{
+    countRows();
+  }
+  ,[slots]);
+
+
+  function countRows(){
+    const total = slots.length;
+    const row = Math.ceil(Math.sqrt(total));
+    setRow(row);
+  }
   useEffect(()=>{
     if(selectedSlot.length >= 2){
       compareCards();
@@ -139,6 +164,7 @@ function CardManager() {
     }
     // Clear Selected
     // setSelectedSlot([]);
+    is
   }
   function renderCards(){ 
     return slots.map((slot,index)=> {
@@ -161,7 +187,8 @@ function CardManager() {
       return <Card onReveal={handleReveal} slotState={slot.slotState} blockReveal={isSelectedAlready || selectedSlotIsFull} cardId={slot.id}></Card>
     })
   }
-// isVisible={slot.slotState === 1} 
+
+  // isVisible={slot.slotState === 1} 
   function setCardState(id,toSet){
     setSlots(prev => {
       const updatedSlot = prev.map(prevMap => prevMap);
@@ -172,7 +199,7 @@ function CardManager() {
 
   return (
     <>
-      <StyledCards>
+      <StyledCards row={row || 3}>
         {renderCards()}
       </StyledCards>
 
