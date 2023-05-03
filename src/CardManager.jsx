@@ -7,7 +7,6 @@ const StyledCard = styled.div`
     background-color: #fbc4f1;
     aspect-ratio: 1/1;
     min-height: 150px;
-
     display:flex;
     justify-content:center;
     align-items: center;
@@ -36,9 +35,13 @@ const StyledCards = styled.div`
   justify-content: center;
  */
   display:  grid;
-  grid-template-columns: repeat(${props => props.row || '3'},1fr);
-  max-width: 80vh;
-  margin: 1em 0;
+
+  /* ${props => props.row || '3'} */
+  grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
+  width:80%;
+  overflow: auto;
+  margin: 1em auto;
+  
 `
 
 const SLOT_STATE = {
@@ -98,13 +101,11 @@ function CardManager({onWin}) {
       id:24,
       slotState:0
     }
-    
-    
   ]
   const [slots,setSlots] = useState(defaultSlot);
 
   const [selectedSlot,setSelectedSlot] = useState([]);
-  const [row,setRow] = useState(3);
+  const [row,setRow] = useState(4);
   
   const clickDelay = 1000;
 
@@ -125,6 +126,10 @@ function CardManager({onWin}) {
   }
 
   useEffect(()=>{
+    setSlots(generateSlots(11));
+  },[]);
+
+  useEffect(()=>{
     countRows();
   }
   ,[slots]);
@@ -135,6 +140,7 @@ function CardManager({onWin}) {
     const row = Math.ceil(Math.sqrt(total));
     setRow(row);
   }
+
   useEffect(()=>{
     if(selectedSlot.length >= 2){
       compareCards();
@@ -164,7 +170,6 @@ function CardManager({onWin}) {
     }
     // Clear Selected
     // setSelectedSlot([]);
-    is
   }
   function renderCards(){ 
     return slots.map((slot,index)=> {
@@ -184,7 +189,7 @@ function CardManager({onWin}) {
       const isSolved = slot.slotState === SLOT_STATE.SOLVED;
       const isSelectedAlready = slot.slotState === SLOT_STATE.SELECTED;
       const selectedSlotIsFull = selectedSlot.length >= 2;
-      return <Card onReveal={handleReveal} slotState={slot.slotState} blockReveal={isSelectedAlready || selectedSlotIsFull} cardId={slot.id}></Card>
+      return <Card key={index} onReveal={handleReveal} slotState={slot.slotState} blockReveal={isSelectedAlready || selectedSlotIsFull} cardId={slot.id}></Card>
     })
   }
 
@@ -210,7 +215,7 @@ function CardManager({onWin}) {
   )
 }
 
-function Card({isVisible, onReveal,blockReveal,cardId,isSolved,slotState}){
+function Card({isVisible, onReveal,blockReveal,cardId,slotState}){
 
   const [visible,setVisible] = useState(isVisible || false);
   const [_slotState,setSlotState] = useState(slotState|| 0);
@@ -258,5 +263,19 @@ function Card({isVisible, onReveal,blockReveal,cardId,isSolved,slotState}){
         {renderCard[slotState]}
     </StyledCard>
   )
+}
+
+
+export function generateSlots(pairCount){
+    const cardTemplate = {
+      id:10,
+      slotState:SLOT_STATE.CLOSED
+    }
+    let array = new Array(pairCount*2).fill({});
+    array = array.map((slot)=>{
+      return cardTemplate;
+    });
+    console.log('Slots Generated:', {array});    
+    return array;
 }
 export default CardManager
