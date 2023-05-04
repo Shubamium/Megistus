@@ -22,6 +22,9 @@ const StyledCard = styled.div`
     &:hover{
       box-shadow:inset 0px 0px 4px #000000d5;
       cursor: pointer;
+      & .card-image{
+        scale:1.4;
+      }
     }
     & h2{
       margin: 0;
@@ -34,6 +37,9 @@ const StyledCard = styled.div`
       max-width:50%;
       max-height:50%;
       object-fit: cover;
+      filter: invert(100%) drop-shadow(0px 0px 7px ${props => props.accent || '#fff'});
+      transition: scale 250ms ;
+      scale:1.2;
     }
 
     &::before{
@@ -79,12 +85,16 @@ const StyledCard = styled.div`
       right:8%;
 
       font-size:.9rem;
-      color:#463d3dd9;
+      color:#222125c0;
     }
     & .status{
       opacity:.4;
       font-size:.5rem;
       letter-spacing:4px;
+      user-select:none;
+      -ms-user-select:none;
+      -moz-user-select:none;
+      -webkit-user-select:none;
     }
    
 `;
@@ -352,7 +362,7 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
     opacity:0
   }
   
-  let accentColor = '#5a91ff';
+  let accentColor = '#274eff';
   if(slotState === SLOT_STATE.SELECTED){
     accentColor = '#fff'
   }else if(slotState === SLOT_STATE.SOLVED){
@@ -370,7 +380,7 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
         {cardImage &&
         <img src={cardImage} style={slotState > 0 ? imgVisible : imgHidden} className='card-image'></img>}
         <p className='status'>Card {cardStatus}</p>
-        {isSolved || isSelected && <p className='cardId'>{cardId || 0}</p>}
+        {(isSolved || isSelected) && <p className='cardId'>{cardId || 0}</p>}
         <p className='state'>{slotState}</p>
     </StyledCard>
   )
