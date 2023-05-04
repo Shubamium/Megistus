@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import CardManager, { generateSlots } from "./CardManager";
 import astro from "./cards/astrology";
 
@@ -15,10 +16,15 @@ import astro from "./cards/astrology";
 // Leaderboard + Sign Up
 
 export default function App() {
+  const [board,setBoard] = useState();
+  useEffect(()=>{
+    const slot = generateSlots(4,astro);
+    setBoard(slot);
+  },[]);
   return (
     <div>
         <h2>Card Revealing Game</h2>
-        <CardManager cards={generateSlots(5,astro)} cardSet={astro} ></CardManager>
+        <CardManager cards={board || []} cardSet={astro} ></CardManager>
     </div>
   )
 }

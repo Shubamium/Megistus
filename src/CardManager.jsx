@@ -157,11 +157,18 @@ function CardManager({onWin,cards,cardSet}) {
     if(selectedSlot[0].id === selectedSlot[1].id){
       // Card is the same
       console.log('card is the same');
-      selectedSlot.forEach((slot)=>{
-        setCardState(slot.index,SLOT_STATE.SOLVED);
-      })
-      setSelectedSlot([]);
 
+      let tempSlot = [...slots];
+
+      for(let i = 0;i < selectedSlot.length; i++){
+          setCardState(selectedSlot[i].index,SLOT_STATE.SOLVED);
+          tempSlot[selectedSlot[i].index].slotState = SLOT_STATE.SOLVED;
+      }
+      if(checkWin(tempSlot)){
+        onWin && onWin();
+        window.alert('Win: All card pairs are solved!');
+      }
+      setSelectedSlot([]);
     }else{
       // Card is not 
       // Flip both again
@@ -174,6 +181,14 @@ function CardManager({onWin,cards,cardSet}) {
     }
     // Clear Selected
     // setSelectedSlot([]);
+  }
+
+
+  function checkWin(toCheck){
+    console.log('checking win');
+    if(toCheck.length === 0) return;
+    console.log({toCheck}); 
+    return toCheck.every((sloted) => sloted.slotState === SLOT_STATE.SOLVED);
   }
   function renderCards(set){ 
     return slots.map((slot,index)=> {
@@ -198,11 +213,14 @@ function CardManager({onWin,cards,cardSet}) {
   }
 
   function setCardState(id,toSet){
+    var updated = [];
     setSlots(prev => {
       const updatedSlot = prev.map(prevMap => prevMap);
       updatedSlot[id] = {...prev[id],slotState:toSet};
+      updated = updatedSlot;
       return updatedSlot;
     })
+    return updated;
   }
 
   return (
@@ -264,12 +282,9 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
   };
 
   let toRenderIndex = slotState === 0 || slotState;
-  // if(isSolved === true){
-  //   toRenderIndex = SLOT_STATE.SOLVED;
-  // }
+  
   return (
     <StyledCard onClick={handleOnClick}>
-       
         {renderCard[slotState]}
         <p>{slotState}</p>
     </StyledCard>
