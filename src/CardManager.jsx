@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 
 const StyledCard = styled.div`
-    background-color: #666;
+    background-color: #444;
     aspect-ratio: 1/1;
     min-height: 150px;
     display:flex;
@@ -13,8 +13,13 @@ const StyledCard = styled.div`
     flex-direction:column;
     border-radius: 1em;
     text-align: center;
+
+    position:relative;
+    box-shadow: 0px 0px 12px #0000003c;
+
     &:hover{
-      box-shadow: 0px 0px 14px #00000087;
+      box-shadow:inset 0px 0px 4px #000000d5;
+      cursor: pointer;
     }
     & h2{
       margin: 0;
@@ -31,6 +36,18 @@ const StyledCard = styled.div`
 
     &::before{
       content: "";
+      background-color: ${props => props.accent || '#fa4848'};
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      scale:1.06;
+      opacity: 0;
+      z-index:-1;
+    }
+    &:hover::before{
+      opacity:.8;
+      border-radius: 1em;
+      box-shadow: 0px 0px 10px ${props => props.accent || '#fa4848'};
     }
 `
 
@@ -295,7 +312,7 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
   }
   
   return (
-    <StyledCard onClick={handleOnClick}>
+    <StyledCard accent={'#3573ef'} onClick={handleOnClick}>
         {cardImage &&
         <img src={cardImage} style={slotState > 0 ? imgVisible : imgHidden} className='card-image'></img>}
         {renderCard[slotState || 0]}
