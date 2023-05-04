@@ -327,7 +327,7 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
   if(slotState === SLOT_STATE.SELECTED){
     accentColor = '#fff'
   }else if(slotState === SLOT_STATE.SOLVED){
-    accentColor = '#ecff6f'
+    accentColor = '#fdaa1b'
   }
   const isSolved = slotState === SLOT_STATE.SOLVED;
   const isSelected = slotState === SLOT_STATE.SELECTED;
