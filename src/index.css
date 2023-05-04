@@ -14,5 +14,12 @@ body{
 
 h2,p{
     color: white;
+}
+
+h2{
+    font-family: var(--fontSans);
+}
+
+p{
     font-family: var(--fontMain);
 }

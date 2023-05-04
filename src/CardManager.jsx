@@ -5,7 +5,7 @@ import styled from 'styled-components'
 
 const StyledCard = styled.div`
     background-color: #444;
-    aspect-ratio: 1/1;
+    /* aspect-ratio: 1/1; */
     min-height: 150px;
     display:flex;
     justify-content:center;
@@ -14,6 +14,8 @@ const StyledCard = styled.div`
     border-radius: 1em;
     text-align: center;
 
+    padding-inline:1.4em;
+    gap:1em;
     position:relative;
     transition: all 550ms ;
     transition-delay: 100ms;
@@ -31,7 +33,7 @@ const StyledCard = styled.div`
     & .card-image{
       max-width:50%;
       max-height:50%;
-
+      object-fit: cover;
     }
 
     &::before{
@@ -61,7 +63,31 @@ const StyledCard = styled.div`
       box-shadow: 0px 0px 10px ${props => props.accent || '#fa4848'};
       }
     `}}
-`
+
+
+    & .cardId{
+      font-size:1.1rem;
+      position:absolute;
+      bottom:4%;
+      left:8%;
+      color: ${props => props.accent || '#ffffff'};
+    }
+
+    & .state{
+      position:absolute;
+      top:8%;
+      right:8%;
+
+      font-size:.9rem;
+      color:#463d3dd9;
+    }
+    & .status{
+      opacity:.4;
+      font-size:.5rem;
+      letter-spacing:4px;
+    }
+   
+`;
 
 const StyledCards = styled.div`
   /* background-color: purple; */
@@ -81,13 +107,18 @@ const StyledCards = styled.div`
   overflow: auto;
   margin: 1em auto;
   
-`
+`;
 
 const SLOT_STATE = {
   CLOSED:0,
   OPEN:1,
   SOLVED:2,
   SELECTED:3 
+}
+
+const slotStateToString = (currSlot) =>{
+  const key = Object.keys(SLOT_STATE);
+  return key[currSlot];
 }
 
 function CardManager({onWin,cards,cardSet}) {
@@ -287,23 +318,21 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
     setSlotState(_slotState);
   },[slotState])
   
+  const cardName = <h2 className='cardName'>{cardId || 0}</h2>;
   const renderCard =  [
     <div className='card_closed'>
         <p>Card Closed</p>
     </div>,
     <div className="card_opened">
-      <h2>Card {cardId || 0}</h2>
       <p>Card Opened</p>
-      
-      {/* {blockReveal ? <p>Card Solved</p> : <p>Card Opened</p>} */}
+      {cardName}
     </div>,
     <div className="card_opened">
-      
-      <h2>Card {cardId || 0}</h2>
+      {cardName}
       <p>Card Solved</p>
     </div>,
     <div className="card_selected">
-      <h2>Card {cardId || 0}</h2>
+      {cardName}
       <p>Selected</p>
     </div>
   ];
@@ -327,16 +356,22 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
   if(slotState === SLOT_STATE.SELECTED){
     accentColor = '#fff'
   }else if(slotState === SLOT_STATE.SOLVED){
-    accentColor = '#fdaa1b'
+    accentColor = '#fdae1b'
   }
   const isSolved = slotState === SLOT_STATE.SOLVED;
   const isSelected = slotState === SLOT_STATE.SELECTED;
+
+
+  let _status = slotStateToString(slotState || 0).toLowerCase().split('');
+  _status[0] = _status[0].toUpperCase();
+  let cardStatus = _status.join('');
   return (
     <StyledCard accent={accentColor} isShown={isSolved || isSelected} onClick={handleOnClick}>
         {cardImage &&
         <img src={cardImage} style={slotState > 0 ? imgVisible : imgHidden} className='card-image'></img>}
-        {renderCard[slotState || 0]}
-        <p>{slotState}</p>
+        <p className='status'>Card {cardStatus}</p>
+        {isSolved || isSelected && <p className='cardId'>{cardId || 0}</p>}
+        <p className='state'>{slotState}</p>
     </StyledCard>
   )
 }
@@ -386,4 +421,5 @@ function shuffleCards(cardSet){
   }
   return toReturn;
 }
+
 export default CardManager
