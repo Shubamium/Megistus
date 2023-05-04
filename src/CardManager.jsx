@@ -48,7 +48,7 @@ const SLOT_STATE = {
   CLOSED:0,
   OPEN:1,
   SOLVED:2,
-  SELECTED:3
+  SELECTED:3 
 }
 
 function CardManager({onWin}) {
@@ -126,7 +126,7 @@ function CardManager({onWin}) {
   }
 
   useEffect(()=>{
-    setSlots(generateSlots(11));
+    setSlots(generateSlots(24));
   },[]);
 
   useEffect(()=>{
