@@ -15,8 +15,8 @@ const StyledCard = styled.div`
     text-align: center;
 
     position:relative;
-    box-shadow: 0px 0px 12px #0000003c;
-
+    transition: all 550ms ;
+    transition-delay: 100ms;
     &:hover{
       box-shadow:inset 0px 0px 4px #000000d5;
       cursor: pointer;
@@ -40,13 +40,18 @@ const StyledCard = styled.div`
       width: 100%;
       height: 100%;
       position: absolute;
-      scale:1.06;
+      scale:.98;
       opacity: 0;
       z-index:-1;
+      border-radius: 1em;
+      opacity: 1;
+      transition: all 350ms ,border-radius 0ms;
+      box-shadow: 0px 0px 12px #0000003c;
+
     }
     &:hover::before{
-      opacity:.8;
-      border-radius: 1em;
+      scale:1.06;
+      opacity: 1;
       box-shadow: 0px 0px 10px ${props => props.accent || '#fa4848'};
     }
 `
@@ -312,7 +317,7 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
   }
   
   return (
-    <StyledCard accent={'#3573ef'} onClick={handleOnClick}>
+    <StyledCard accent={'#5a91ff'} onClick={handleOnClick}>
         {cardImage &&
         <img src={cardImage} style={slotState > 0 ? imgVisible : imgHidden} className='card-image'></img>}
         {renderCard[slotState || 0]}
