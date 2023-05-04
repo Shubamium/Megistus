@@ -54,6 +54,13 @@ const StyledCard = styled.div`
       opacity: 1;
       box-shadow: 0px 0px 10px ${props => props.accent || '#fa4848'};
     }
+    ${props => props.isShown && `
+      &::before{
+      scale:1.06;
+      opacity: 1;
+      box-shadow: 0px 0px 10px ${props => props.accent || '#fa4848'};
+      }
+    `}}
 `
 
 const StyledCards = styled.div`
@@ -316,8 +323,16 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
     opacity:0
   }
   
+  let accentColor = '#5a91ff';
+  if(slotState === SLOT_STATE.SELECTED){
+    accentColor = '#fff'
+  }else if(slotState === SLOT_STATE.SOLVED){
+    accentColor = '#ecff6f'
+  }
+  const isSolved = slotState === SLOT_STATE.SOLVED;
+  const isSelected = slotState === SLOT_STATE.SELECTED;
   return (
-    <StyledCard accent={'#5a91ff'} onClick={handleOnClick}>
+    <StyledCard accent={accentColor} isShown={isSolved || isSelected} onClick={handleOnClick}>
         {cardImage &&
         <img src={cardImage} style={slotState > 0 ? imgVisible : imgHidden} className='card-image'></img>}
         {renderCard[slotState || 0]}
