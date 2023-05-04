@@ -291,7 +291,6 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
     opacity:0
   }
   
-  if(!slotState) return <></>;
   return (
     <StyledCard onClick={handleOnClick}>
         {cardImage &&
@@ -342,7 +341,8 @@ function shuffleCards(cardSet){
   }
 
   for(let i = 0; i < cardSet.length;i++){
-    toReturn = swap(toReturn,Math.round(Math.random()*cardSet.length),Math.round(Math.random()*cardSet.length));
+    const setAmount = cardSet.length-1;
+    toReturn = swap(toReturn,Math.round(Math.random()*setAmount),Math.round(Math.random()*setAmount));
   }
   return toReturn;
 }
