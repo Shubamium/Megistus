@@ -22,6 +22,12 @@ const StyledCard = styled.div`
     & p {
       margin: 0;
     }
+
+    & .card-image{
+      max-width:50%;
+      max-height:50%;
+
+    }
 `
 
 const StyledCards = styled.div`
@@ -51,7 +57,7 @@ const SLOT_STATE = {
   SELECTED:3 
 }
 
-function CardManager({onWin}) {
+function CardManager({onWin,cards,cardSet}) {
 
   const defaultSlot = [
     {
@@ -102,7 +108,7 @@ function CardManager({onWin}) {
       slotState:0
     }
   ]
-  const [slots,setSlots] = useState(defaultSlot);
+  const [slots,setSlots] = useState(cards || defaultSlot);
 
   const [selectedSlot,setSelectedSlot] = useState([]);
   const [row,setRow] = useState(4);
@@ -126,13 +132,19 @@ function CardManager({onWin}) {
   }
 
   useEffect(()=>{
-    setSlots(generateSlots(24));
-  },[]);
-
-  useEffect(()=>{
     countRows();
   }
   ,[slots]);
+
+  useEffect(()=>{
+    setSlots(cards);
+  },[cards]);
+
+  useEffect(()=>{
+    if(selectedSlot.length >= 2){
+      compareCards();
+    }
+  },[selectedSlot]);
 
 
   function countRows(){
@@ -140,14 +152,6 @@ function CardManager({onWin}) {
     const row = Math.ceil(Math.sqrt(total));
     setRow(row);
   }
-
-  useEffect(()=>{
-    if(selectedSlot.length >= 2){
-      compareCards();
-    }
-  },[selectedSlot])
-
-
   async function compareCards(){
     console.log('comparing Card');
     if(selectedSlot[0].id === selectedSlot[1].id){
@@ -171,7 +175,7 @@ function CardManager({onWin}) {
     // Clear Selected
     // setSelectedSlot([]);
   }
-  function renderCards(){ 
+  function renderCards(set){ 
     return slots.map((slot,index)=> {
       const handleReveal = ()=>{
         if(slot.slotState === SLOT_STATE.SOLVED){
@@ -189,11 +193,10 @@ function CardManager({onWin}) {
       const isSolved = slot.slotState === SLOT_STATE.SOLVED;
       const isSelectedAlready = slot.slotState === SLOT_STATE.SELECTED;
       const selectedSlotIsFull = selectedSlot.length >= 2;
-      return <Card key={index} onReveal={handleReveal} slotState={slot.slotState} blockReveal={isSelectedAlready || selectedSlotIsFull} cardId={slot.id}></Card>
+      return <Card cardImage={set[slot.id]} key={index} onReveal={handleReveal} slotState={slot.slotState} blockReveal={isSelectedAlready || selectedSlotIsFull} cardId={slot.id}></Card>
     })
   }
 
-  // isVisible={slot.slotState === 1} 
   function setCardState(id,toSet){
     setSlots(prev => {
       const updatedSlot = prev.map(prevMap => prevMap);
@@ -205,7 +208,8 @@ function CardManager({onWin}) {
   return (
     <>
       <StyledCards row={row || 3}>
-        {renderCards()}
+        {/* Add Default Set here later */}
+        {renderCards(cardSet)} 
       </StyledCards>
 
       <p>{JSON.stringify(slots)}</p>
@@ -215,7 +219,7 @@ function CardManager({onWin}) {
   )
 }
 
-function Card({isVisible, onReveal,blockReveal,cardId,slotState}){
+function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
 
   const [visible,setVisible] = useState(isVisible || false);
   const [_slotState,setSlotState] = useState(slotState|| 0);
@@ -235,13 +239,19 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState}){
     <div className="card_opened">
       <h2>Card {cardId || 0}</h2>
       <p>Card Opened</p>
+      {cardImage &&
+        <img src={cardImage} className='card-image'></img>}
       {/* {blockReveal ? <p>Card Solved</p> : <p>Card Opened</p>} */}
     </div>,
     <div className="card_opened">
+       {cardImage &&
+        <img src={cardImage} className='card-image'></img>}
       <h2>Card {cardId || 0}</h2>
       <p>Card Solved</p>
     </div>,
     <div className="card_selected">
+       {cardImage &&
+        <img src={cardImage} className='card-image'></img>}
       <h2>Card {cardId || 0}</h2>
       <p>Selected</p>
     </div>
@@ -259,23 +269,38 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState}){
   // }
   return (
     <StyledCard onClick={handleOnClick}>
-        <p>{slotState}</p>
+       
         {renderCard[slotState]}
+        <p>{slotState}</p>
     </StyledCard>
   )
 }
 
 
-export function generateSlots(pairCount){
-    const cardTemplate = {
-      id:10,
-      slotState:SLOT_STATE.CLOSED
+export function generateSlots(pairCount,cardSet){
+  if(!cardSet) return [];
+
+  const cardSetAmount = cardSet.length;
+  const cardTemplate = {
+    id:10,
+    slotState:SLOT_STATE.CLOSED
+  }
+
+  // let array = new Array(pairCount*2).fill({});
+  // array = array.map((slot)=>{
+  //   return createPair;
+  // });
+  const fillWithPair = (arr) =>{
+    for(let i = 0; i < pairCount;i++){
+      const cardId = i % cardSetAmount;
+      const pair = {...cardTemplate, id:cardId}
+      arr.push(pair,pair);
     }
-    let array = new Array(pairCount*2).fill({});
-    array = array.map((slot)=>{
-      return cardTemplate;
-    });
-    console.log('Slots Generated:', {array});    
-    return array;
+  }
+
+  let array = [];
+  fillWithPair(array);
+  console.log('Slots Generated:', {array});    
+  return array;
 }
 export default CardManager

@@ -1,4 +1,5 @@
-import CardManager from "./CardManager";
+import CardManager, { generateSlots } from "./CardManager";
+import astro from "./cards/astrology";
 
 // Feature List
 // ------- Main Feature
@@ -17,7 +18,7 @@ export default function App() {
   return (
     <div>
         <h2>Card Revealing Game</h2>
-        <CardManager></CardManager>
+        <CardManager cards={generateSlots(5,astro)} cardSet={astro} ></CardManager>
     </div>
   )
 }
