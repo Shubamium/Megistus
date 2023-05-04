@@ -6,8 +6,10 @@ import GameStartForm from "./components/GameStartForm";
 // Feature List
 // ------- Main Feature
 // Initialized Board with how many cards
+// Initialized Board with difficulty (How many of the set is used)
 // Timed + Time Attack
 // Level 
+//
 
 // ------ Design Example
 //  https://codepen.io/dig-lopes/pen/WLVGda 
