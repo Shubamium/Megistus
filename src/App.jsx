@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import CardManager, { generateSlots } from "./CardManager";
 import astro from "./cards/astrology";
+import GameStartForm from "./components/GameStartForm";
 
 // Feature List
 // ------- Main Feature
@@ -16,14 +17,24 @@ import astro from "./cards/astrology";
 // Leaderboard + Sign Up
 
 export default function App() {
-  const [board,setBoard] = useState();
+  const [board,setBoard] = useState([]);
   useEffect(()=>{
-    const slot = generateSlots(4,astro);
-    setBoard(slot);
+    
   },[]);
+
+  function startGame(gameStartData){
+    console.log('start game: ',gameStartData);
+    initializeBoard(gameStartData.pairCount);
+  }
+
+  function initializeBoard(pCount){
+    const slot = generateSlots(pCount,astro);
+    setBoard(slot);
+  }
   return (
     <div>
         <h2>Card Revealing Game</h2>
+        <GameStartForm onSubmit={startGame}></GameStartForm>
         <CardManager cards={board || []} cardSet={astro} ></CardManager>
     </div>
   )

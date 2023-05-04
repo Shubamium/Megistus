@@ -152,6 +152,7 @@ function CardManager({onWin,cards,cardSet}) {
     const row = Math.ceil(Math.sqrt(total));
     setRow(row);
   }
+
   async function compareCards(){
     console.log('comparing Card');
     if(selectedSlot[0].id === selectedSlot[1].id){
@@ -190,7 +191,11 @@ function CardManager({onWin,cards,cardSet}) {
     console.log({toCheck}); 
     return toCheck.every((sloted) => sloted.slotState === SLOT_STATE.SOLVED);
   }
+
   function renderCards(set){ 
+
+    if(!slots) return <></>;
+
     return slots.map((slot,index)=> {
       const handleReveal = ()=>{
         if(slot.slotState === SLOT_STATE.SOLVED){
@@ -205,7 +210,6 @@ function CardManager({onWin,cards,cardSet}) {
         console.log(index);
         setCardState(index,slot.slotState === SLOT_STATE.OPEN ? SLOT_STATE.CLOSED : SLOT_STATE.OPEN);
       }
-      const isSolved = slot.slotState === SLOT_STATE.SOLVED;
       const isSelectedAlready = slot.slotState === SLOT_STATE.SELECTED;
       const selectedSlotIsFull = selectedSlot.length >= 2;
       return <Card cardImage={set[slot.id]} key={index} onReveal={handleReveal} slotState={slot.slotState} blockReveal={isSelectedAlready || selectedSlotIsFull} cardId={slot.id}></Card>
@@ -236,6 +240,7 @@ function CardManager({onWin,cards,cardSet}) {
     </>
   )
 }
+
 
 function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
 
@@ -285,6 +290,8 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
   const imgHidden = {
     opacity:0
   }
+  
+  if(!slotState) return <></>;
   return (
     <StyledCard onClick={handleOnClick}>
         {cardImage &&
