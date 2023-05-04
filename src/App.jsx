@@ -18,9 +18,6 @@ import GameStartForm from "./components/GameStartForm";
 
 export default function App() {
   const [board,setBoard] = useState([]);
-  useEffect(()=>{
-    
-  },[]);
 
   function startGame(gameStartData){
     console.log('start game: ',gameStartData);

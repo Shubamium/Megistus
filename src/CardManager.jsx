@@ -4,7 +4,7 @@ import styled from 'styled-components'
 
 
 const StyledCard = styled.div`
-    background-color: #fbc4f1;
+    background-color: #666;
     aspect-ratio: 1/1;
     min-height: 150px;
     display:flex;
@@ -28,12 +28,16 @@ const StyledCard = styled.div`
       max-height:50%;
 
     }
+
+    &::before{
+      content: "";
+    }
 `
 
 const StyledCards = styled.div`
-  background-color: purple;
+  /* background-color: purple; */
   padding: 2em;
-  gap: 1em;
+  gap: 2em;
   
   /*
   ----Flex
@@ -248,7 +252,6 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
   const [_slotState,setSlotState] = useState(slotState|| 0);
 
   useEffect(()=>{
-    console.log(isVisible);
     setVisible(isVisible);
   },[isVisible])
   useEffect(()=>{
