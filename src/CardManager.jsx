@@ -285,7 +285,7 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
   
   return (
     <StyledCard onClick={handleOnClick}>
-        {renderCard[slotState]}
+        {renderCard[slotState || 0]}
         <p>{slotState}</p>
     </StyledCard>
   )
@@ -315,7 +315,24 @@ export function generateSlots(pairCount,cardSet){
 
   let array = [];
   fillWithPair(array);
+  array = shuffleCards(array);
   console.log('Slots Generated:', {array});    
   return array;
+}
+
+function shuffleCards(cardSet){
+  let toReturn = [...cardSet];
+  
+  const swap = (arr,a,b)=>{
+    let tempArr = [...arr];
+    tempArr[a] = arr[b];
+    tempArr[b] = arr[a];
+    return tempArr;
+  }
+
+  for(let i = 0; i < cardSet.length;i++){
+    toReturn = swap(toReturn,Math.round(Math.random()*cardSet.length),Math.round(Math.random()*cardSet.length));
+  }
+  return toReturn;
 }
 export default CardManager
