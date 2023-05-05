@@ -38,8 +38,17 @@ const StyledCard = styled.div`
       max-height:50%;
       object-fit: cover;
       filter: invert(100%) drop-shadow(0px 0px 7px ${props => props.accent || '#fff'});
-      transition: scale 250ms ;
+      transition: scale 250ms,opacity 250ms ease;
       scale:1.2;
+      opacity:0;
+    }
+    & .card-image.revealed{
+      max-width:50%;
+      max-height:50%;
+      object-fit: cover;
+      filter: invert(100%) drop-shadow(0px 0px 7px ${props => props.accent || '#fff'});
+      scale:1.2;
+      opacity: 1;
     }
 
     &::before{
@@ -382,7 +391,8 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
   return (
     <StyledCard accent={accentColor} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
         {cardImage &&
-        <img src={cardImage} style={slotState > 0 ? imgVisible : imgHidden} className='card-image'></img>}
+        // style={slotState > 0 ? imgVisible : imgHidden}
+        <img src={cardImage}  className={'card-image' + ' ' + (slotState > 0 ? 'revealed' : '')}></img>}
         <p className='status'>Card {cardStatus}</p>
         {(isSolved || isSelected) && <p className='cardId'>{cardId || 0}</p>}
         <p className='state'>{slotState}</p>
