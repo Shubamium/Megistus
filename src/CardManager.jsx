@@ -21,7 +21,7 @@ const StyledCard = styled.div`
     transition-delay: 100ms;
     &:hover{
       box-shadow:inset 0px 0px 4px #000000d5;
-      cursor: pointer;
+      ${props => props.interactable  && ' cursor: pointer;' }
       & .card-image{
         scale:1.4;
       }
@@ -236,12 +236,16 @@ function CardManager({onWin,cards,cardSet}) {
       let tempSlot = [...slots];
 
       for(let i = 0;i < selectedSlot.length; i++){
-          setCardState(selectedSlot[i].index,SLOT_STATE.SOLVED);
+          // setCardState(selectedSlot[i].index,SLOT_STATE.SOLVED);
           tempSlot[selectedSlot[i].index].slotState = SLOT_STATE.SOLVED;
       }
       if(checkWin(tempSlot)){
         onWin && onWin();
-        window.alert('Win: All card pairs are solved!');
+        setSelectedSlot(tempSlot);
+        setTimeout(()=>{
+         window.alert('Win: All card pairs are solved!');
+
+        },500);
       }
       setSelectedSlot([]);
     }else{
@@ -362,7 +366,7 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
     opacity:0
   }
   
-  let accentColor = '#274eff';
+  let accentColor = '#3d60ff';
   if(slotState === SLOT_STATE.SELECTED){
     accentColor = '#fff'
   }else if(slotState === SLOT_STATE.SOLVED){
@@ -376,7 +380,7 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
   _status[0] = _status[0].toUpperCase();
   let cardStatus = _status.join('');
   return (
-    <StyledCard accent={accentColor} isShown={isSolved || isSelected} onClick={handleOnClick}>
+    <StyledCard accent={accentColor} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
         {cardImage &&
         <img src={cardImage} style={slotState > 0 ? imgVisible : imgHidden} className='card-image'></img>}
         <p className='status'>Card {cardStatus}</p>
