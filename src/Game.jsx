@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import CardManager, { generateSlots } from "./CardManager";
 import astro from "./cards/astrology";
 import GameStartForm from "./components/GameStartForm";
+import { useLocation } from "react-router-dom";
 
 // Feature List
 // ------- Main Feature
@@ -18,13 +19,14 @@ import GameStartForm from "./components/GameStartForm";
 // Custom Decks
 // Leaderboard + Sign Up
 
-export default function App() {
+export default function Game({location}) {
   const [board,setBoard] = useState([]);
-
-  function startGame(gameStartData){
-    console.log('start game: ',gameStartData);
-    initializeBoard(gameStartData.pairCount);
-  }
+  const {state:gameStateData} = useLocation();
+  useEffect(()=>{
+    if(gameStateData){
+      initializeBoard(gameStateData.pairCount);
+    }
+  },[]);
 
   function initializeBoard(pCount){
     const slot = generateSlots(pCount,astro);
@@ -33,7 +35,7 @@ export default function App() {
   return (
     <div>
         <h2>Card Revealing Game</h2>
-        <GameStartForm onSubmit={startGame}></GameStartForm>
+        {/* <GameStartForm onSubmit={startGame}></GameStartForm> */}
         <CardManager cards={board || []} cardSet={astro} ></CardManager>
     </div>
   )
