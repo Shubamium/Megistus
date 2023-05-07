@@ -21,7 +21,7 @@ const StyledCard = styled.div`
     transition-delay: 100ms;
     &:hover{
       box-shadow:inset 0px 0px 4px #000000d5;
-      ${props => props.interactable  && ' cursor: pointer;' }
+      ${props => props.interactable === true  && ' cursor: pointer;' }
       & .card-image{
         scale:1.4;
       }
@@ -116,10 +116,9 @@ const StyledCards = styled.div`
   /*
   ----Flex
   display: flex;
-  justify-content: center;
- */
+  */
   display:  grid;
-
+ 
   /* ${props => props.row || '3'} */
   grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
   width:80%;
@@ -298,8 +297,9 @@ function CardManager({onWin,cards,cardSet}) {
         setCardState(index,slot.slotState === SLOT_STATE.OPEN ? SLOT_STATE.CLOSED : SLOT_STATE.OPEN);
       }
       const isSelectedAlready = slot.slotState === SLOT_STATE.SELECTED;
+      const isSolved = slot.slotState === SLOT_STATE.SOLVED;
       const selectedSlotIsFull = selectedSlot.length >= 2;
-      return <Card cardImage={set[slot.id]} key={index} onReveal={handleReveal} slotState={slot.slotState} blockReveal={isSelectedAlready || selectedSlotIsFull} cardId={slot.id}></Card>
+      return <Card cardImage={set[slot.id]} key={index} onReveal={handleReveal} slotState={slot.slotState} blockReveal={isSelectedAlready || selectedSlotIsFull || isSolved} cardId={slot.id}></Card>
     })
   }
 
@@ -389,7 +389,7 @@ function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
   _status[0] = _status[0].toUpperCase();
   let cardStatus = _status.join('');
   return (
-    <StyledCard accent={accentColor} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
+    <StyledCard  accent={accentColor} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
         {cardImage &&
         // style={slotState > 0 ? imgVisible : imgHidden}
         <img src={cardImage}  className={'card-image' + ' ' + (slotState > 0 ? 'revealed' : '')}></img>}
