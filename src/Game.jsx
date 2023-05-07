@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 import CardManager, { generateSlots } from "./CardManager";
 import astro from "./cards/astrology";
 import GameStartForm from "./components/GameStartForm";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import StyledDialog, { StyledEmptyDialog } from "./styled/StyledDialog";
 import styled from "styled-components";
 import StyledButton from "./styled/StyledButton";
+import HStack from "./styled/layout/HStack";
 
 // Feature List
 // ------- Main Feature
@@ -22,9 +23,11 @@ import StyledButton from "./styled/StyledButton";
 // Custom Decks
 // Leaderboard + Sign Up
 
-export default function Game({location}) {
+export default function Game() {
   const [board,setBoard] = useState([]);
+  const [hasStarted,setHasStarted] = useState(false);
   const {state:gameStateData} = useLocation();
+  const navigate = useNavigate();
   useEffect(()=>{
     if(gameStateData){
       initializeBoard(gameStateData.pairCount);
@@ -35,12 +38,17 @@ export default function Game({location}) {
     const slot = generateSlots(pCount,astro);
     setBoard(slot);
   }
+
+  function handleWin(){
+    navigate('/results',{state:{status:'Win'}})
+  }
   return (
     <div>
         {/* <GameStartForm onSubmit={startGame}></GameStartForm> */}
-        <CardManager cards={board || []} cardSet={astro} ></CardManager>
+        <CardManager onWin={handleWin} cards={board || []} cardSet={astro} ></CardManager>
         <Link to={'/'}><button>Go Back</button></Link>
-        <StartModal></StartModal>
+       {!hasStarted && <StartModal onStart={()=>{setHasStarted(true)}}></StartModal>}
+       P
     </div>
   )
 }
@@ -58,7 +66,7 @@ const StartDialog = styled(StyledEmptyDialog)`
   }
   
 `
-function StartModal(){
+function StartModal({onStart}){
   const modal = useRef();
   useEffect(()=>{
     if(!modal.current.open){
@@ -68,10 +76,12 @@ function StartModal(){
   return (
     <StartDialog ref={modal}>
        <h2 className="title">Game Start</h2>
-        <StyledButton>Start</StyledButton>
-       <Link>
-        <StyledButton>Go Back</StyledButton>
-       </Link>
+      <HStack>
+          <StyledButton onClick={()=>{onStart && onStart()}}>Start</StyledButton>
+          <Link to={'/'}>
+            <StyledButton>Go Back</StyledButton>
+          </Link>
+      </HStack>
        <p className="countdown">3</p>
     </StartDialog>
   )

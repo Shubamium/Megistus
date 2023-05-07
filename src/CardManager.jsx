@@ -248,11 +248,9 @@ function CardManager({onWin,cards,cardSet}) {
           tempSlot[selectedSlot[i].index].slotState = SLOT_STATE.SOLVED;
       }
       if(checkWin(tempSlot)){
-        onWin && onWin();
         setSelectedSlot(tempSlot);
         setTimeout(()=>{
-         window.alert('Win: All card pairs are solved!');
-
+          onWin && onWin();
         },500);
       }
       setSelectedSlot([]);
