@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import CardManager, { generateSlots } from "./CardManager";
 import astro from "./cards/astrology";
 import GameStartForm from "./components/GameStartForm";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 // Feature List
 // ------- Main Feature
@@ -34,9 +34,9 @@ export default function Game({location}) {
   }
   return (
     <div>
-        <h2>Card Revealing Game</h2>
         {/* <GameStartForm onSubmit={startGame}></GameStartForm> */}
         <CardManager cards={board || []} cardSet={astro} ></CardManager>
+        <Link to={'/'}><button>Go Back</button></Link>
     </div>
   )
 }
