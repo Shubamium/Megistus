@@ -1,6 +1,8 @@
+import { generateSlots, shuffleCards } from './CardGeneration';
+import { Card } from './Card';
 import { useEffect, useState } from 'react'
 import './App.css'
-import styled from 'styled-components'
+import styled, { css } from 'styled-components'
 
 
 const StyledCard = styled.div`
@@ -71,7 +73,7 @@ const StyledCard = styled.div`
       opacity: 1;
       box-shadow: 0px 0px 10px ${props => props.accent || '#fa4848'};
     }
-    ${props => props.isShown && `
+    ${props => props.isShown && css`
       &::before{
       scale:1.06;
       opacity: 1;
@@ -127,14 +129,14 @@ const StyledCards = styled.div`
   
 `;
 
-const SLOT_STATE = {
+export const SLOT_STATE = {
   CLOSED:0,
   OPEN:1,
   SOLVED:2,
   SELECTED:3 
 }
 
-const slotStateToString = (currSlot) =>{
+export const slotStateToString = (currSlot) =>{
   const key = Object.keys(SLOT_STATE);
   return key[currSlot];
 }
@@ -256,7 +258,7 @@ function CardManager({onWin,cards,cardSet}) {
       setSelectedSlot([]);
     }else{
       // Card is not 
-      // Flip both again
+      // Flip both again 
       setTimeout(()=>{
         selectedSlot.forEach((slot)=>{
           setCardState(slot.index,SLOT_STATE.CLOSED);
@@ -325,123 +327,25 @@ function CardManager({onWin,cards,cardSet}) {
     </>
   )
 }
-
-
-function Card({isVisible, onReveal,blockReveal,cardId,slotState,cardImage}){
-
-  const [visible,setVisible] = useState(isVisible || false);
-  const [_slotState,setSlotState] = useState(slotState|| 0);
-
-  useEffect(()=>{
-    setVisible(isVisible);
-  },[isVisible])
-  useEffect(()=>{
-    setSlotState(_slotState);
-  },[slotState])
-  
-  const cardName = <h2 className='cardName'>{cardId || 0}</h2>;
-  const renderCard =  [
-    <div className='card_closed'>
-        <p>Card Closed</p>
-    </div>,
-    <div className="card_opened">
-      <p>Card Opened</p>
-      {cardName}
-    </div>,
-    <div className="card_opened">
-      {cardName}
-      <p>Card Solved</p>
-    </div>,
-    <div className="card_selected">
-      {cardName}
-      <p>Selected</p>
-    </div>
-  ];
-  
-  
-  const handleOnClick = ()=>{
-    if(blockReveal)return;
-    onReveal && onReveal();setVisible(prev => !prev);
-  };
-
-  let toRenderIndex = slotState === 0 || slotState;
-  
-  const imgVisible = {
-    opacity:1
-  }
-  const imgHidden = {
-    opacity:0
-  }
-  
-  let accentColor = '#3d60ff';
-  if(slotState === SLOT_STATE.SELECTED){
-    accentColor = '#fff'
-  }else if(slotState === SLOT_STATE.SOLVED){
-    accentColor = '#fdae1b'
-  }
-  const isSolved = slotState === SLOT_STATE.SOLVED;
-  const isSelected = slotState === SLOT_STATE.SELECTED;
-
-
-  let _status = slotStateToString(slotState || 0).toLowerCase().split('');
-  _status[0] = _status[0].toUpperCase();
-  let cardStatus = _status.join('');
-  return (
-    <StyledCard  accent={accentColor} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
-        {cardImage &&
-        // style={slotState > 0 ? imgVisible : imgHidden}
-        <img src={cardImage}  className={'card-image' + ' ' + (slotState > 0 ? 'revealed' : '')}></img>}
-        <p className='status'>Card {cardStatus}</p>
-        {(isSolved || isSelected) && <p className='cardId'>{cardId || 0}</p>}
-        <p className='state'>{slotState}</p>
-    </StyledCard>
-  )
-}
-
-
-export function generateSlots(pairCount,cardSet){
-  if(!cardSet) return [];
-
-  const cardSetAmount = cardSet.length;
-  const cardTemplate = {
-    id:10,
-    slotState:SLOT_STATE.CLOSED
-  }
-
-  // let array = new Array(pairCount*2).fill({});
-  // array = array.map((slot)=>{
-  //   return createPair;
-  // });
-  const fillWithPair = (arr) =>{
-    for(let i = 0; i < pairCount;i++){
-      const cardId = i % cardSetAmount;
-      const pair = {...cardTemplate, id:cardId}
-      arr.push(pair,pair);
-    }
-  }
-
-  let array = [];
-  fillWithPair(array);
-  array = shuffleCards(array);
-  console.log('Slots Generated:', {array});    
-  return array;
-}
-
-function shuffleCards(cardSet){
-  let toReturn = [...cardSet];
-  
-  const swap = (arr,a,b)=>{
-    let tempArr = [...arr];
-    tempArr[a] = arr[b];
-    tempArr[b] = arr[a];
-    return tempArr;
-  }
-
-  for(let i = 0; i < cardSet.length;i++){
-    const setAmount = cardSet.length-1;
-    toReturn = swap(toReturn,Math.round(Math.random()*setAmount),Math.round(Math.random()*setAmount));
-  }
-  return toReturn;
-}
-
 export default CardManager
+
+
+// const cardName = <h2 className='cardName'>{cardId || 0}</h2>;
+// const renderCard =  [
+//   <div className='card_closed'>
+//       <p>Card Closed</p>
+//   </div>,
+//   <div className="card_opened">
+//     <p>Card Opened</p>
+//     {cardName}
+//   </div>,
+//   <div className="card_opened">
+//     {cardName}
+//     <p>Card Solved</p>
+//   </div>,
+//   <div className="card_selected">
+//     {cardName}
+//     <p>Selected</p>
+//   </div>
+// ];
+
