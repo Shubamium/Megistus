@@ -1,114 +1,8 @@
-import { generateSlots, shuffleCards } from './CardGeneration';
-import { Card } from './Card';
 import { useEffect, useState } from 'react'
 import './App.css'
 import styled, { css } from 'styled-components'
+import Card from './components/Card.jsx';
 
-
-const StyledCard = styled.div`
-    background-color: #444;
-    /* aspect-ratio: 1/1; */
-    min-height: 150px;
-    display:flex;
-    justify-content:center;
-    align-items: center;
-    flex-direction:column;
-    border-radius: 1em;
-    text-align: center;
-
-    padding-inline:1.4em;
-    gap:1em;
-    position:relative;
-    transition: all 550ms ;
-    transition-delay: 100ms;
-    &:hover{
-      box-shadow:inset 0px 0px 4px #000000d5;
-      ${props => props.interactable === true  && ' cursor: pointer;' }
-      & .card-image{
-        scale:1.4;
-      }
-    }
-    & h2{
-      margin: 0;
-    }
-    & p {
-      margin: 0;
-    }
-
-    & .card-image{
-      max-width:50%;
-      max-height:50%;
-      object-fit: cover;
-      filter: invert(100%) drop-shadow(0px 0px 7px ${props => props.accent || '#fff'});
-      transition: scale 250ms,opacity 250ms ease;
-      scale:1.2;
-      opacity:0;
-    }
-    & .card-image.revealed{
-      max-width:50%;
-      max-height:50%;
-      object-fit: cover;
-      filter: invert(100%) drop-shadow(0px 0px 7px ${props => props.accent || '#fff'});
-      scale:1.2;
-      opacity: 1;
-    }
-
-    &::before{
-      content: "";
-      background-color: ${props => props.accent || '#fa4848'};
-      width: 100%;
-      height: 100%;
-      position: absolute;
-      scale:.98;
-      opacity: 0;
-      z-index:-1;
-      border-radius: 1em;
-      opacity: 1;
-      transition: all 350ms ,border-radius 0ms;
-      box-shadow: 0px 0px 12px #0000003c;
-
-    }
-    &:hover::before{
-      scale:1.06;
-      opacity: 1;
-      box-shadow: 0px 0px 10px ${props => props.accent || '#fa4848'};
-    }
-    ${props => props.isShown && css`
-      &::before{
-      scale:1.06;
-      opacity: 1;
-      box-shadow: 0px 0px 10px ${props => props.accent || '#fa4848'};
-      }
-    `}}
-
-
-    & .cardId{
-      font-size:1.1rem;
-      position:absolute;
-      bottom:4%;
-      left:8%;
-      color: ${props => props.accent || '#ffffff'};
-    }
-
-    & .state{
-      position:absolute;
-      top:8%;
-      right:8%;
-
-      font-size:.9rem;
-      color:#222125c0;
-    }
-    & .status{
-      opacity:.4;
-      font-size:.5rem;
-      letter-spacing:4px;
-      user-select:none;
-      -ms-user-select:none;
-      -moz-user-select:none;
-      -webkit-user-select:none;
-    }
-   
-`;
 
 const StyledCards = styled.div`
   /* background-color: purple; */
@@ -136,10 +30,7 @@ export const SLOT_STATE = {
   SELECTED:3 
 }
 
-export const slotStateToString = (currSlot) =>{
-  const key = Object.keys(SLOT_STATE);
-  return key[currSlot];
-}
+
 
 function CardManager({onWin,cards,cardSet}) {
 

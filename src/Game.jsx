@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import CardManager, { generateSlots } from "./CardManager";
+import CardManager from "./CardManager";
 import astro from "./cards/astrology";
 import GameStartForm from "./components/GameStartForm";
 import { Link, useLocation, useNavigate } from "react-router-dom";
@@ -7,6 +7,7 @@ import StyledDialog, { StyledEmptyDialog } from "./styled/StyledDialog";
 import styled from "styled-components";
 import StyledButton from "./styled/StyledButton";
 import HStack from "./styled/layout/HStack";
+import generateSlots from "./util/CardGeneration";
 
 // Feature List
 // ------- Main Feature
@@ -44,11 +45,9 @@ export default function Game() {
   }
   return (
     <div>
-        {/* <GameStartForm onSubmit={startGame}></GameStartForm> */}
         <CardManager onWin={handleWin} cards={board || []} cardSet={astro} ></CardManager>
         <Link to={'/'}><button>Go Back</button></Link>
-       {!hasStarted && <StartModal onStart={()=>{setHasStarted(true)}}></StartModal>}
-       P
+        {!hasStarted && <StartModal onStart={()=>{setHasStarted(true)}}></StartModal>}
     </div>
   )
 }

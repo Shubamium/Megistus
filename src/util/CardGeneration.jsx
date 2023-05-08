@@ -1,3 +1,4 @@
+import { SLOT_STATE } from "../CardManager";
 
 export default function generateSlots(pairCount, cardSet) {
   if (!cardSet) return [];
