@@ -12,7 +12,8 @@ const MenuContext = createContext();
 export default function Home() {
   const routes = {
     index:<Menu_Main/>,  // Required
-    custom:<Menu_CustomMode/>
+    custom:<Menu_CustomMode/>,
+    modeSelect:<Menu_GameModeSelect/>
   }
   const [activeMenu,setActiveMenu] = useState('');
   
@@ -41,13 +42,36 @@ function MenuRenderer({route,activeMenu}){
 
 
 
-const StyledMainMenu = styled.div`
-    background-color: #1f1e1e;
+const StyledMenuPanel = styled.div`
     max-width: 80vw;
+    min-height: min(70%,700px);
     margin: 2em auto;
     padding: 2em;
     border-left: gold solid 2px;
+    background-color: #1f1e1e;
     border-right: #2e2efa solid 2px;
+
+    & .menu{
+      width: 50%;
+      display: flex;
+      gap:1em;
+      flex-direction:column;
+      margin: 3em 0;
+    }
+    & .title{
+      font-size: 1.4rem;
+      font-family: var(--fontMain);
+      font-weight: normal;
+      text-align: center;
+      left:1.5%;
+      position: relative;
+      letter-spacing: 1px;
+      margin: 1em 0;
+      margin-bottom: 0;
+    }
+`
+const StyledMainMenu = styled(StyledMenuPanel)`
+   
     & .title{
       font-size: 5rem;
       font-family: var(--fontMain);
@@ -81,14 +105,9 @@ const StyledMainMenu = styled.div`
         margin:1em;
       }
     }
-    & .menu{
-      width: 50%;
-      display: flex;
-      gap:1em;
-      flex-direction:column;
-      margin: 3em 0;
-    }
+    
 `
+const BackButton = ({onClick})=><StyledMenuButton bgColor={"#11111173"} onClick={onClick}>Back</StyledMenuButton>;
 function Menu_Main(){
   const {showMenu} = useMenuNavigate();
   return (
@@ -97,7 +116,7 @@ function Menu_Main(){
         <h2 className="title">Megistus</h2>
         <p className="sub-title">Memory Card Game <span>✦</span> Website Design by <a href="https://github.com/shubamium">Shubamium</a> <span>✦</span> Astrology Themed</p>
           <div className="menu">
-            <StyledMenuButton onClick={()=>{showMenu('custom')}}>Start</StyledMenuButton>
+            <StyledMenuButton onClick={()=>{showMenu('modeSelect')}}>Start</StyledMenuButton>
             <StyledMenuButton>Leaderboard</StyledMenuButton>
             <StyledMenuButton>About</StyledMenuButton>
           </div>
@@ -105,6 +124,25 @@ function Menu_Main(){
     </StyledMainMenu>
   )
 }
+function Menu_GameModeSelect(){
+  const {showMenu,navigate} = useMenuNavigate();
+  function startGame(gameStartData){
+    navigate('/game',{state:gameStartData});
+  }
+  return (
+    <StyledMenuPanel>
+      <VStack align={'center'}>
+        <h2 className="title">Select the game mode:</h2>
+        <div className="menu">
+          <StyledMenuButton onClick={()=>{showMenu('')}}>Campaign</StyledMenuButton>
+          <StyledMenuButton onClick={()=>{showMenu('custom')}}>Custom</StyledMenuButton>
+          <BackButton onClick={()=>{showMenu('custom')}}></BackButton>
+        </div>
+      </VStack>
+    </StyledMenuPanel>
+  )
+}
+
 
 function Menu_CustomMode(){
   const {showMenu,navigate} = useMenuNavigate();
@@ -112,11 +150,11 @@ function Menu_CustomMode(){
     navigate('/game',{state:gameStartData});
   }
   return (
-    <>
+    <StyledMenuPanel>
       <h2>Custom</h2>
       <GameStartForm onSubmit={startGame}></GameStartForm>
       <StyledButton onClick={()=>{showMenu('index')}}>Back</StyledButton>
-    </>
+    </StyledMenuPanel>
   )
 }
 

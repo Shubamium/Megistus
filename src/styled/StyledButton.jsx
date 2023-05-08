@@ -18,5 +18,9 @@ const StyledButton = styled.button`
 export const StyledMenuButton = styled(StyledButton)`
     width:100%;
     display: block;
+    &:hover{
+        scale:1.02;
+        border-bottom: gold solid 2px;
+    }
 `
 export default StyledButton;
