@@ -8,7 +8,9 @@ const slotStateToString = (currSlot) =>{
 };
 
 const StyledCard = styled.div`
-  background-color: #444;
+  /* background-color: #444; */
+  background-color: #1f1f25;
+  background-color: ${props => props.solved && '#383841'};
   /* aspect-ratio: 1/1; */
   min-height: 150px;
   display:flex;
@@ -41,16 +43,16 @@ const StyledCard = styled.div`
     max-width:50%;
     max-height:50%;
     object-fit: cover;
-    filter: invert(100%) drop-shadow(0px 0px 7px ${props => props.accent || '#fff'});
+    filter: invert(80%) drop-shadow(0px 0px 4px ${props => props.accent || '#fff'});
     transition: scale 250ms,opacity 250ms ease;
     scale:1.2;
-    opacity:0;
+    opacity: 0;
   }
   & .card-image.revealed{
     max-width:50%;
     max-height:50%;
     object-fit: cover;
-    filter: invert(100%) drop-shadow(0px 0px 7px ${props => props.accent || '#fff'});
+    filter: invert(100%) drop-shadow(0px 0px 15px ${props => props.accent || '#ffffff'});
     scale:1.2;
     opacity: 1;
   }
@@ -67,11 +69,11 @@ const StyledCard = styled.div`
     border-radius: 1em;
     opacity: 1;
     transition: all 350ms ,border-radius 0ms;
-    box-shadow: 0px 0px 12px #0000003c;
+    box-shadow: 0px 0px 14px #0000003c;
 
   }
   &:hover::before{
-    scale:1.06;
+    scale:1.04;
     opacity: 1;
     box-shadow: 0px 0px 10px ${props => props.accent || '#fa4848'};
   }
@@ -90,6 +92,7 @@ const StyledCard = styled.div`
     bottom:4%;
     left:8%;
     color: ${props => props.accent || '#ffffff'};
+    opacity:.8
   }
 
   & .state{
@@ -132,7 +135,7 @@ export default function Card({
   let accentColor = ()=>{
     let color = '#3d60ff';
     if (slotState === SLOT_STATE.SELECTED) {
-        color = '#fff';
+        color = '#5d6278';
     } else if (slotState === SLOT_STATE.SOLVED) {
         color = '#fdae1b';
     }
@@ -146,10 +149,8 @@ export default function Card({
   _status[0] = _status[0].toUpperCase();
   let cardStatus = _status.join('');
   
-
-
   return (
-    <StyledCard accent={accentColor} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
+    <StyledCard accent={accentColor} solved={isSolved} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
         {cardImage && // style={slotState > 0 ? imgVisible : imgHidden}
         <img src={cardImage} className={'card-image' + ' ' + (slotState > 0 ? 'revealed' : '')}></img>}
         <p className='status'>Card {cardStatus}</p>

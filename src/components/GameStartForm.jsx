@@ -1,5 +1,16 @@
 import { useRef } from "react";
+import StyledButton from "../styled/StyledButton";
+import styled from "styled-components";
 
+
+const StyledGameStartForm = styled.form`
+    display: flex;
+    width: 100%;
+    gap:1em;
+
+    & .input{
+    }
+`
 export default function GameStartForm({onSubmit}) {
   
     // Data Ref
@@ -16,9 +27,9 @@ export default function GameStartForm({onSubmit}) {
     }
     return (
 
-    <form onSubmit={handleSubmit}>
+    <StyledGameStartForm onSubmit={handleSubmit}>
         <input type="number" min="0" max='25' required ref={pairCount} placeholder="Pair count. . ." />
-        <button type="submit">Start</button>
-    </form>
+        <StyledButton type="submit">Start</StyledButton>
+    </StyledGameStartForm>
   )
 }
