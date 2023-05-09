@@ -31,13 +31,23 @@ export default function GameStartForm({onSubmit,backButton}) {
   
     // Data Ref
     const pairCount =  useRef();
+    const modeRef =  useRef();
+    const difficultyRef =  useRef();
+    const cardStyleRef =  useRef();
+
     const [diff,setDiff] = useState(0);
     function handleSubmit(e){
         e.preventDefault();
 
         const _pairCount = pairCount.current.value;
+        const _modeRef = modeRef.current.options[modeRef.current.selectedIndex].value;
+        const _cardStyleRef = cardStyleRef.current.options[cardStyleRef.current.selectedIndex].value;
+        const _difficultyRef = difficultyRef.current.value;
         const gameStartData = {
-            pairCount:_pairCount
+            pairCount: parseInt(_pairCount),
+            cardStyle: _cardStyleRef,
+            difficulty: parseInt(_difficultyRef),
+            mode:_modeRef
         }
         onSubmit && onSubmit(gameStartData);
     }
@@ -54,23 +64,23 @@ export default function GameStartForm({onSubmit,backButton}) {
             <HStack align={'center'} justify={'stretch'}>
                 <label htmlFor="pair">Difficulty:</label>
                 {/* <input type="range"></input> */}
-                <StyledInput type="range" min="0" max='4' defaultValue={0} onChange={handleDifficulty} placeholder="Diff" />
+                <StyledInput ref={difficultyRef} type="range" min="0" max='4' defaultValue={0} onChange={handleDifficulty} placeholder="Diff" />
                 <StyledInput  min="0" max='5' value={DIFFICULTY[diff]} disabled />
             </HStack>
             <HStack align={'center'} justify={'stretch'}>
                 <label htmlFor="pair">Card Style:</label>
-                <StyledSelect placeholder="Select the mode">
+                <StyledSelect ref={cardStyleRef} placeholder="Select the mode">
                     <option value="astro">Astrology</option>
                     <option value="greek">Greek</option>
                     <option value="japan">Japanese</option>
-                    <option value="japan">Korean</option>
-                    <option value="japan">Cyrilic</option>
-                    <option value="japan">Wingdings</option>
+                    <option value="korean">Korean</option>
+                    <option value="cyrilic">Cyrilic</option>
+                    <option value="wingding">Wingdings</option>
                 </StyledSelect>
             </HStack>
             <HStack align={'center'} justify={'stretch'}>
                 <label htmlFor="pair">Mode:</label>
-                <StyledSelect placeholder="Select the mode">
+                <StyledSelect ref={modeRef} placeholder="Select the mode">
                     <option value="casual">Casual</option>
                     <option value="time">Timed</option>
                     <option value="attack">Time Attack</option>

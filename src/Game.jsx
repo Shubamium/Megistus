@@ -52,6 +52,7 @@ export default function Game() {
 
   useEffect(()=>{
     if(gameStateData){
+      console.log(gameStateData);
       initializeBoard(gameStateData.pairCount);
     }
   },[]);
