@@ -11,9 +11,7 @@ const StyledResultPanel = styled(StyledMenuPanel)`
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     gap:.5em;
-
     & .title{
         font-size: 4rem;
         margin:0;

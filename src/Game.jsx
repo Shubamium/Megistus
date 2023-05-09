@@ -8,6 +8,8 @@ import styled from "styled-components";
 import StyledButton from "./styled/StyledButton";
 import HStack from "./styled/layout/HStack";
 import generateSlots from "./util/CardGeneration";
+import useCountup from "./hooks/useCountup";
+import { secondToTime, timeToString } from "./util/Time";
 
 // Feature List
 // ------- Main Feature
@@ -24,11 +26,18 @@ import generateSlots from "./util/CardGeneration";
 // Custom Decks
 // Leaderboard + Sign Up
 
+
+const StyledGameLayout = styled.div`
+
+
+`
 export default function Game() {
   const [board,setBoard] = useState([]);
   const [hasStarted,setHasStarted] = useState(false);
   const {state:gameStateData} = useLocation();
   const navigate = useNavigate();
+  const countUp = useCountup();
+
   useEffect(()=>{
     if(gameStateData){
       initializeBoard(gameStateData.pairCount);
@@ -43,14 +52,21 @@ export default function Game() {
   function handleWin(){
     navigate('/results',{state:{status:'Win'}})
   }
+
+  function handleStart(){
+    countUp.startTimer();
+    setHasStarted(true);
+  }
+  const countupTime = timeToString(secondToTime(countUp.elapsed));
   return (
-    <div>
+    <StyledGameLayout>
+        <p>{countupTime.substring(0,countupTime.length - 2)}</p>
         <CardManager onWin={handleWin} cards={board || []} cardSet={astro} ></CardManager>
         <HStack justify={'center'}>
            <Link to={'/'}><StyledButton>Back</StyledButton></Link>
         </HStack>
-        {!hasStarted && <StartModal onStart={()=>{setHasStarted(true)}}></StartModal>}
-    </div>
+        {!hasStarted && <StartModal onStart={handleStart}></StartModal>}
+    </StyledGameLayout>
   )
 }
 
@@ -76,7 +92,6 @@ function StartModal({onStart}){
   const [cTimer,setCTimer] = useState(3);
   const [hasStarted,setHasStarted] = useState(false);
   const interval = useRef();
-
   useEffect(()=>{
     if(!modal.current.open){
       modal.current.showModal();
