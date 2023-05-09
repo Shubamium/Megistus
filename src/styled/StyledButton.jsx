@@ -16,7 +16,13 @@ const StyledButton = styled.button`
     &:hover{
         scale: 1.05;
         cursor: pointer;
+
     }
+
+    &:active{
+        scale:.95;
+    }
+   
 `
 
 export const StyledMenuButton = styled(StyledButton)`

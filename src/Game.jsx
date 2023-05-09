@@ -57,6 +57,8 @@ const StartDialog = styled(StyledEmptyDialog)`
   
   & .title{
     font-size: 5vw;
+    font-family: var(--fontMain);
+    letter-spacing: 10px;
   }
 
   & .countdown{
@@ -67,21 +69,47 @@ const StartDialog = styled(StyledEmptyDialog)`
 `
 function StartModal({onStart}){
   const modal = useRef();
+  const [cTimer,setCTimer] = useState(3);
+  const [hasStarted,setHasStarted] = useState(false);
+  const interval = useRef();
+
   useEffect(()=>{
     if(!modal.current.open){
       modal.current.showModal();
     }
   },[]);
+
+  useEffect(()=>{
+    if(cTimer < 0){
+      onStart && onStart()
+    }
+    return ()=>{
+
+    }
+  },[cTimer])
+
+
+  function startCountdown(){
+    setHasStarted(true);
+    if(interval.current) return;
+    interval.current = setInterval(()=>{
+      setCTimer(prev => prev - 1);
+    },1000);
+  }
   return (
     <StartDialog ref={modal}>
        <h2 className="title">Game Start</h2>
-      <HStack>
-          <StyledButton onClick={()=>{onStart && onStart()}}>Start</StyledButton>
-          <Link to={'/'}>
-            <StyledButton>Go Back</StyledButton>
-          </Link>
-      </HStack>
-       <p className="countdown">3</p>
+        {!hasStarted ? (
+           <HStack>
+              <StyledButton onClick={startCountdown}>Start</StyledButton>
+              <Link to={'/'}>
+                <StyledButton>Go Back</StyledButton>
+              </Link>
+           </HStack>
+        ) :
+        <p className="countdown">{cTimer <= 0 ? 'Go' : cTimer}</p>
+        }
+       
     </StartDialog>
   )
 }

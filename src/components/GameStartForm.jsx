@@ -54,7 +54,7 @@ export default function GameStartForm({onSubmit,backButton}) {
             <HStack align={'center'} justify={'stretch'}>
                 <label htmlFor="pair">Difficulty:</label>
                 {/* <input type="range"></input> */}
-                <StyledInput type="range" min="0" max='5' defaultValue={0} onChange={handleDifficulty} placeholder="Diff" />
+                <StyledInput type="range" min="0" max='4' defaultValue={0} onChange={handleDifficulty} placeholder="Diff" />
                 <StyledInput  min="0" max='5' value={DIFFICULTY[diff]} disabled />
             </HStack>
             <HStack align={'center'} justify={'stretch'}>
