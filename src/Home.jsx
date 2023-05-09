@@ -48,9 +48,9 @@ const StyledMenuPanel = styled.div`
     margin: 2em auto;
     padding: 2em;
     border-left: gold solid 2px;
-    background-color: #1f1e1e;
+    background-color: #202027;
     border-right: #2e2efa solid 2px;
-
+    box-shadow:0px 0px 12px black;
     & .menu{
       width: 50%;
       display: flex;
