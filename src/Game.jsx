@@ -67,7 +67,7 @@ export default function Game() {
   }
 
   function handleWin(){
-    navigate('/results',{state:{status:'Win',time:countupTime()}})
+    navigate('/results',{state:{status:'Win',time:getTime(countUp.elapsed)}})
   }
 
   const handleStart = ()=>{
