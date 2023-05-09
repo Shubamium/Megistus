@@ -1,4 +1,4 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import StyledButton from "../styled/StyledButton";
 import styled from "styled-components";
 import StyledInput from "../styled/StyledInput";
@@ -23,6 +23,7 @@ const StyledGameStartForm = styled.form`
     }
 `
 
+const DIFFICULTY = ['Very Easy','Easy','Medium','Hard','Insane']
 // const StyledFormField = styled(HStack)`
 //     align-items: center;
 // `
@@ -30,7 +31,7 @@ export default function GameStartForm({onSubmit,backButton}) {
   
     // Data Ref
     const pairCount =  useRef();
-
+    const [diff,setDiff] = useState(0);
     function handleSubmit(e){
         e.preventDefault();
 
@@ -40,8 +41,10 @@ export default function GameStartForm({onSubmit,backButton}) {
         }
         onSubmit && onSubmit(gameStartData);
     }
+    function handleDifficulty(e){
+        setDiff(e.target.value);
+    }
     return (
-
     <StyledGameStartForm onSubmit={handleSubmit}>
         <VStack style={{width:'50%'}}>
             <HStack align={'center'} justify={'stretch'}>
@@ -50,7 +53,9 @@ export default function GameStartForm({onSubmit,backButton}) {
             </HStack>
             <HStack align={'center'} justify={'stretch'}>
                 <label htmlFor="pair">Difficulty:</label>
-                <StyledInput type="number" min="0" max='25' placeholder="Diff" />
+                {/* <input type="range"></input> */}
+                <StyledInput type="range" min="0" max='5' defaultValue={0} onChange={handleDifficulty} placeholder="Diff" />
+                <StyledInput  min="0" max='5' value={DIFFICULTY[diff]} disabled />
             </HStack>
             <HStack align={'center'} justify={'stretch'}>
                 <label htmlFor="pair">Card Style:</label>
