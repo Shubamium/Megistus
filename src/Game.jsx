@@ -10,6 +10,7 @@ import HStack from "./styled/layout/HStack";
 import generateSlots from "./util/CardGeneration";
 import useCountup from "./hooks/useCountup";
 import { secondToTime, timeToString } from "./util/Time";
+import useCountdown from "./hooks/useCountdown";
 
 // Feature List
 // ------- Main Feature
@@ -37,6 +38,17 @@ export default function Game() {
   const {state:gameStateData} = useLocation();
   const navigate = useNavigate();
   const countUp = useCountup();
+  const countDown = useCountdown(20,onTimesUp);
+
+
+  function onTimesUp(){
+    alert('Time is up');
+  }
+  const countupTime = (elapsed) => {
+    const elapse = timeToString(secondToTime(elapsed));
+    const trimmed = elapse.substring(0,elapse.length - 2);
+    return trimmed;
+  }
 
   useEffect(()=>{
     if(gameStateData){
@@ -50,17 +62,17 @@ export default function Game() {
   }
 
   function handleWin(){
-    navigate('/results',{state:{status:'Win'}})
+    navigate('/results',{state:{status:'Win',time:countupTime()}})
   }
 
   function handleStart(){
     countUp.startTimer();
+    countDown.startTimer();
     setHasStarted(true);
   }
-  const countupTime = timeToString(secondToTime(countUp.elapsed));
   return (
     <StyledGameLayout>
-        <p>{countupTime.substring(0,countupTime.length - 2)}</p>
+        <p>{countupTime(countDown.elapsed)}</p>
         <CardManager onWin={handleWin} cards={board || []} cardSet={astro} ></CardManager>
         <HStack justify={'center'}>
            <Link to={'/'}><StyledButton>Back</StyledButton></Link>

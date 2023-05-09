@@ -29,7 +29,7 @@ export default function Results({location}) {
     return (
         <StyledResultPanel>
             <h2 className="title">Game {state.status}</h2>
-            <p>Time:00:00:00</p>
+            <p>Time:{state.time || '00:00:00'}</p>
             <p></p>
             <HStack>
                 <Link to={-1}><StyledButton>Retry</StyledButton></Link>
