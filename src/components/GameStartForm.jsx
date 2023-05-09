@@ -23,7 +23,14 @@ const StyledGameStartForm = styled.form`
     }
 `
 
-const DIFFICULTY = ['Very Easy','Easy','Medium','Hard','Insane']
+const DIFFICULTY = ['Very Easy','Easy','Medium','Hard','Insane'];
+
+
+export const MODE = {
+    CASUAL:0,
+    TIMED:1,
+    TIME_ATTACK:2
+}
 // const StyledFormField = styled(HStack)`
 //     align-items: center;
 // `
@@ -36,6 +43,7 @@ export default function GameStartForm({onSubmit,backButton}) {
     const cardStyleRef =  useRef();
 
     const [diff,setDiff] = useState(0);
+
     function handleSubmit(e){
         e.preventDefault();
 
@@ -43,17 +51,21 @@ export default function GameStartForm({onSubmit,backButton}) {
         const _modeRef = modeRef.current.options[modeRef.current.selectedIndex].value;
         const _cardStyleRef = cardStyleRef.current.options[cardStyleRef.current.selectedIndex].value;
         const _difficultyRef = difficultyRef.current.value;
+
         const gameStartData = {
             pairCount: parseInt(_pairCount),
             cardStyle: _cardStyleRef,
             difficulty: parseInt(_difficultyRef),
             mode:_modeRef
         }
+
         onSubmit && onSubmit(gameStartData);
     }
+
     function handleDifficulty(e){
         setDiff(e.target.value);
     }
+
     return (
     <StyledGameStartForm onSubmit={handleSubmit}>
         <VStack style={{width:'50%'}}>
@@ -82,7 +94,7 @@ export default function GameStartForm({onSubmit,backButton}) {
                 <label htmlFor="pair">Mode:</label>
                 <StyledSelect ref={modeRef} placeholder="Select the mode">
                     <option value="casual">Casual</option>
-                    <option value="time">Timed</option>
+                    <option value="timed">Timed</option>
                     <option value="attack">Time Attack</option>
                 </StyledSelect>
             </HStack>

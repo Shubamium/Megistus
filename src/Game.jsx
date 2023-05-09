@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import CardManager from "./CardManager";
 import astro from "./cards/astrology";
-import GameStartForm from "./components/GameStartForm";
+import GameStartForm, { MODE } from "./components/GameStartForm";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import StyledDialog, { StyledEmptyDialog } from "./styled/StyledDialog";
 import styled from "styled-components";
@@ -32,19 +32,23 @@ const StyledGameLayout = styled.div`
 
 
 `
+
 export default function Game() {
   const [board,setBoard] = useState([]);
   const [hasStarted,setHasStarted] = useState(false);
+
   const {state:gameStateData} = useLocation();
   const navigate = useNavigate();
+
+
   const countUp = useCountup();
   const countDown = useCountdown(20,onTimesUp);
-
+  
 
   function onTimesUp(){
     alert('Time is up');
   }
-  const countupTime = (elapsed) => {
+  const getTime = (elapsed) => {
     const elapse = timeToString(secondToTime(elapsed));
     const trimmed = elapse.substring(0,elapse.length - 2);
     return trimmed;
@@ -66,14 +70,24 @@ export default function Game() {
     navigate('/results',{state:{status:'Win',time:countupTime()}})
   }
 
-  function handleStart(){
-    countUp.startTimer();
-    countDown.startTimer();
+  const handleStart = ()=>{
+    if(gameStateData.mode === 'timed'){
+      countUp.startTimer();
+    }else if(gameStateData.mode === 'attack'){
+      countDown.startTimer();
+    }
     setHasStarted(true);
+  }
+
+  let timerElement = null;
+  if(gameStateData.mode === 'timed'){
+     timerElement = <p>{getTime(countUp.elapsed)}</p>
+  }else if(gameStateData.mode === 'attack'){
+     timerElement = <p>{getTime(countDown.elapsed)}</p>
   }
   return (
     <StyledGameLayout>
-        <p>{countupTime(countDown.elapsed)}</p>
+        {timerElement}
         <CardManager onWin={handleWin} cards={board || []} cardSet={astro} ></CardManager>
         <HStack justify={'center'}>
            <Link to={'/'}><StyledButton>Back</StyledButton></Link>
