@@ -44,8 +44,8 @@ function MenuRenderer({route,activeMenu}){
 
 const StyledMenuPanel = styled.div`
     max-width: 80vw;
-    min-height: min(70%,700px);
-    margin: 2em auto;
+    min-height: min(80vh,800px);
+    margin: 4em auto;
     padding: 2em;
     border-left: gold solid 2px;
     background-color: #202027;
@@ -63,7 +63,6 @@ const StyledMenuPanel = styled.div`
       font-family: var(--fontMain);
       font-weight: normal;
       text-align: center;
-      left:1.5%;
       position: relative;
       letter-spacing: 1px;
       margin: 1em 0;
@@ -113,10 +112,10 @@ function Menu_Main(){
   return (
     <StyledMainMenu>
       <VStack align={'center'}>
-        <h2 className="title">Megistus</h2>
+        <h2 className="title">Megistus </h2>
         <p className="sub-title">Memory Card Game <span>✦</span> Website Design by <a href="https://github.com/shubamium">Shubamium</a> <span>✦</span> Astrology Themed</p>
           <div className="menu">
-            <StyledMenuButton onClick={()=>{showMenu('modeSelect')}}>Start</StyledMenuButton>
+            <StyledMenuButton onClick={()=>{showMenu('modeSelect')}}>✧ Start ✧</StyledMenuButton>
             <StyledMenuButton>Leaderboard</StyledMenuButton>
             <StyledMenuButton>About</StyledMenuButton>
           </div>
@@ -136,25 +135,30 @@ function Menu_GameModeSelect(){
         <div className="menu">
           <StyledMenuButton onClick={()=>{showMenu('')}}>Campaign</StyledMenuButton>
           <StyledMenuButton onClick={()=>{showMenu('custom')}}>Custom</StyledMenuButton>
-          <BackButton onClick={()=>{showMenu('custom')}}></BackButton>
+          <BackButton onClick={()=>{showMenu('')}}></BackButton>
         </div>
       </VStack>
     </StyledMenuPanel>
   )
 }
 
-
+const StyledCustomMode = styled(StyledMenuPanel)`
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+`
 function Menu_CustomMode(){
   const {showMenu,navigate} = useMenuNavigate();
   function startGame(gameStartData){
     navigate('/game',{state:gameStartData});
   }
   return (
-    <StyledMenuPanel>
-      <h2>Custom</h2>
+    <StyledCustomMode>
+      <h2 className="title">Custom</h2>
       <GameStartForm onSubmit={startGame}></GameStartForm>
-      <StyledButton onClick={()=>{showMenu('index')}}>Back</StyledButton>
-    </StyledMenuPanel>
+      <StyledButton onClick={()=>{showMenu('modeSelect')}}>Back</StyledButton>
+    </StyledCustomMode>
   )
 }
 
