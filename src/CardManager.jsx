@@ -212,9 +212,9 @@ function CardManager({onWin,cards,cardSet}) {
         {renderCards(cardSet)} 
       </StyledCards>
 
-      <p>{JSON.stringify(slots)}</p>
-      <h2>Selected Slot</h2>
-      <p>{JSON.stringify(selectedSlot)}</p>
+      {/* <p>{JSON.stringify(slots)}</p> */}
+      {/* <h2>Selected Slot</h2> */}
+      {/* <p>{JSON.stringify(selectedSlot)}</p> */}
     </>
   )
 }

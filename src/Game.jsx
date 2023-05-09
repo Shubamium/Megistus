@@ -46,7 +46,7 @@ export default function Game() {
   return (
     <div>
         <CardManager onWin={handleWin} cards={board || []} cardSet={astro} ></CardManager>
-        <Link to={'/'}><button>Go Back</button></Link>
+        <Link to={'/'}><StyledButton>Back</StyledButton></Link>
         {!hasStarted && <StartModal onStart={()=>{setHasStarted(true)}}></StartModal>}
     </div>
   )
