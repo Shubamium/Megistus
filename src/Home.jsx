@@ -42,7 +42,7 @@ function MenuRenderer({route,activeMenu}){
 
 
 
-const StyledMenuPanel = styled.div`
+export const StyledMenuPanel = styled.div`
     max-width: 80vw;
     min-height: min(80vh,800px);
     margin: 4em auto;
@@ -68,7 +68,8 @@ const StyledMenuPanel = styled.div`
       margin: 1em 0;
       margin-bottom: 0;
     }
-`
+`;
+
 const StyledMainMenu = styled(StyledMenuPanel)`
    
     & .title{
