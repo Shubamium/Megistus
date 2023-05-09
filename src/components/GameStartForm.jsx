@@ -2,19 +2,31 @@ import { useRef } from "react";
 import StyledButton from "../styled/StyledButton";
 import styled from "styled-components";
 import StyledInput from "../styled/StyledInput";
+import VStack from "../styled/layout/VStack";
+import HStack from "../styled/layout/HStack";
+import StyledSelect from "../styled/StyledSelect";
 
 
 const StyledGameStartForm = styled.form`
     display: flex;
     width: 100%;
-    gap:1em;
-    justify-content: center;
-
+    gap:1.2em;
+    flex-direction: column;
+    align-items: center;
     & .input{
-        width: 40%;
+        width: 70%;
+    }
+    color: #cccccc;
+    & label{
+        white-space: nowrap;
+        min-width: 20%;
     }
 `
-export default function GameStartForm({onSubmit}) {
+
+// const StyledFormField = styled(HStack)`
+//     align-items: center;
+// `
+export default function GameStartForm({onSubmit,backButton}) {
   
     // Data Ref
     const pairCount =  useRef();
@@ -31,8 +43,40 @@ export default function GameStartForm({onSubmit}) {
     return (
 
     <StyledGameStartForm onSubmit={handleSubmit}>
-        <StyledInput type="number" min="0" max='25' required ref={pairCount} placeholder="Pair count. . ." />
-        <StyledButton type="submit">Start</StyledButton>
+        <VStack style={{width:'50%'}}>
+            <HStack align={'center'} justify={'stretch'}>
+                <label htmlFor="pair">Pair Count:</label>
+                <StyledInput type="number" min="0" max='25' required ref={pairCount} placeholder="Pair count. . ." />
+            </HStack>
+            <HStack align={'center'} justify={'stretch'}>
+                <label htmlFor="pair">Difficulty:</label>
+                <StyledInput type="number" min="0" max='25' placeholder="Diff" />
+            </HStack>
+            <HStack align={'center'} justify={'stretch'}>
+                <label htmlFor="pair">Card Style:</label>
+                <StyledSelect placeholder="Select the mode">
+                    <option value="astro">Astrology</option>
+                    <option value="greek">Greek</option>
+                    <option value="japan">Japanese</option>
+                    <option value="japan">Korean</option>
+                    <option value="japan">Cyrilic</option>
+                    <option value="japan">Wingdings</option>
+                </StyledSelect>
+            </HStack>
+            <HStack align={'center'} justify={'stretch'}>
+                <label htmlFor="pair">Mode:</label>
+                <StyledSelect placeholder="Select the mode">
+                    <option value="casual">Casual</option>
+                    <option value="time">Timed</option>
+                    <option value="attack">Time Attack</option>
+                </StyledSelect>
+            </HStack>
+            
+        </VStack>
+        <HStack>
+            <StyledButton type="submit">Start</StyledButton>
+            {backButton()}
+        </HStack>
     </StyledGameStartForm>
   )
 }
