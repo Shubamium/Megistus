@@ -46,11 +46,16 @@ export default function Game() {
   return (
     <div>
         <CardManager onWin={handleWin} cards={board || []} cardSet={astro} ></CardManager>
-        <Link to={'/'}><StyledButton>Back</StyledButton></Link>
+        <HStack justify={'center'}>
+           <Link to={'/'}><StyledButton>Back</StyledButton></Link>
+        </HStack>
         {!hasStarted && <StartModal onStart={()=>{setHasStarted(true)}}></StartModal>}
     </div>
   )
 }
+
+
+
 const StartDialog = styled(StyledEmptyDialog)`
   text-align: center;
   background: none;
@@ -60,7 +65,6 @@ const StartDialog = styled(StyledEmptyDialog)`
     font-family: var(--fontMain);
     letter-spacing: 10px;
   }
-
   & .countdown{
     font-size: 5vw;
     color: gold;

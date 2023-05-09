@@ -156,7 +156,6 @@ function Menu_CustomMode(){
   return (
     <StyledCustomMode>
       <h2 className="title">Custom Mode</h2>
-      
       <GameStartForm onSubmit={startGame} backButton={()=><StyledButton onClick={()=>{showMenu('modeSelect')}}>Back</StyledButton>}></GameStartForm>
     </StyledCustomMode>
   )
