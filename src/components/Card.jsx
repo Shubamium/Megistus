@@ -47,6 +47,12 @@ const StyledCard = styled.div`
     transition: scale 250ms,opacity 250ms ease;
     scale:1.2;
     opacity: 0;
+    pointer-events: none;
+
+    user-select: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
   }
   & .card-image.revealed{
     max-width:50%;
