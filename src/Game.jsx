@@ -34,7 +34,46 @@ const StyledGameLayout = styled.div`
     font-size: 2rem;
     margin-top: .4em;
     padding-top: .5em;
+    text-shadow: 0 0 4px white;
     letter-spacing: 10px;
+  }
+
+  & .timer .side-timer{
+    /* position:fixed;
+    height: 100vh;
+    width:100vw;
+    z-index: 100; */
+    /* position:fixed;
+    left:-160px;
+    scale: .6;
+    top:50%;
+    rotate:90deg;
+    font-size: 2vh; */
+    & .actual-timer{
+      /* position:absolute;
+      left: -10%;
+      top:50%;
+      rotate:90deg; */
+    }
+  }
+  & .timer .side-timer{
+    position:fixed;
+    z-index:200;
+    left:45%;
+    bottom:10px;
+    transform:translateX(-50%);
+    scale: .6;
+    font-size: 2vh;
+    /* background-color: #000000ef; */
+    & .actual-timer{
+      /* position:absolute;
+      left: -10%;
+      top:50%;
+      rotate:90deg; */
+    }
+  }
+  & .timer .side-timer p{
+    position:sticky;
   }
   
 `
@@ -90,7 +129,7 @@ export default function Game() {
     <StyledGameLayout>
         <Timer {...timerProps}/>
         <CardManager onWin={handleWin} cards={board || []} cardSet={astro} ></CardManager>
-        <HStack justify={'center'} style={{margin:'2em'}}>
+        <HStack justify={'end'} style={{margin:'2em'}}>
            <Link to={'/'}><StyledButton>Back</StyledButton></Link>
         </HStack>
         {!hasStarted && <StartModal onStart={handleStart}></StartModal>}
@@ -115,21 +154,46 @@ const StartDialog = styled(StyledEmptyDialog)`
   }
   
 `
-function Timer(countUp,countDown,mode) {
-  let timerElement = null;
+function Timer({countUp,countDown,mode}) {
+  const [sideTime, setSideTime] = useState(false);
   const getTime = (elapsed) => {
     const elapse = timeToString(secondToTime(elapsed));
     const trimmed = elapse.substring(0,elapse.length - 2);
     return trimmed;
   }
+
+  let timerElement = null;
   if(mode === 'timed'){
      timerElement = <p>꧁𓊈𒆜{getTime(countUp.elapsed)}𒆜𓊉꧂</p>
   }else if(mode === 'attack'){
      timerElement = <p>꧁𓊈𒆜{getTime(countDown.elapsed)}𒆜𓊉꧂</p>
   }
+
+  let sideTimer = (
+    <div className="side-timer">
+      {timerElement}
+    </div>
+  );
   
+  function handleScroll(e){
+      console.log(window.scrollY);
+      if(window.scrollY > 100){
+        setSideTime(true);
+      }else{
+        
+        setSideTime(false);
+      }
+  }
+  useEffect(()=>{
+    document.addEventListener('scroll',handleScroll);
+    ()=>{
+      document.removeEventListener('scroll',handleScroll);
+    }
+  },[]);
+
   return <div className="timer">
     {timerElement}
+    {sideTime && sideTimer}
   </div>;
 }
 
