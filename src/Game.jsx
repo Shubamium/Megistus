@@ -46,7 +46,9 @@ export default function Game() {
   
 
   function onTimesUp(){
-    alert('Time is up');
+    // alert('Time is up');
+    navigate('/results',{state:{status:'Lose',time:getTime(countUp.elapsed)},timeLeft:(getTime(countDown.elapsed))})
+
   }
   const getTime = (elapsed) => {
     const elapse = timeToString(secondToTime(elapsed));
@@ -71,11 +73,11 @@ export default function Game() {
   }
 
   const handleStart = ()=>{
-    if(gameStateData.mode === 'timed'){
+    // if(gameStateData.mode === 'timed'){
       countUp.startTimer();
-    }else if(gameStateData.mode === 'attack'){
+    // }else if(gameStateData.mode === 'attack'){
       countDown.startTimer();
-    }
+    // }
     setHasStarted(true);
   }
 
