@@ -36,9 +36,6 @@ const StyledGameLayout = styled.div`
     padding-top: .5em;
     letter-spacing: 10px;
   }
-
-  
-
   
 `
 
@@ -59,16 +56,14 @@ export default function Game() {
     navigate('/results',{state:{status:'Lose',time:getTime(countUp.elapsed)},timeLeft:(getTime(countDown.elapsed))})
 
   }
-  const getTime = (elapsed) => {
-    const elapse = timeToString(secondToTime(elapsed));
-    const trimmed = elapse.substring(0,elapse.length - 2);
-    return trimmed;
-  }
+ 
 
   useEffect(()=>{
     if(gameStateData){
       console.log(gameStateData);
       initializeBoard(gameStateData.pairCount);
+    }else{
+      navigate('/');
     }
   },[]);
 
@@ -90,18 +85,10 @@ export default function Game() {
     setHasStarted(true);
   }
 
-  let timerElement = null;
-  if(gameStateData.mode === 'timed'){
-     timerElement = <p>꧁𓊈𒆜{getTime(countUp.elapsed)}𒆜𓊉꧂</p>
-  }else if(gameStateData.mode === 'attack'){
-     timerElement = <p>꧁𓊈𒆜{getTime(countDown.elapsed)}𒆜𓊉꧂</p>
-  }
-  
+  const timerProps = {countDown:countDown,countUp:countUp,mode:gameStateData.mode}
   return (
     <StyledGameLayout>
-        <div className="timer">
-        {timerElement}
-        </div>
+        <Timer {...timerProps}/>
         <CardManager onWin={handleWin} cards={board || []} cardSet={astro} ></CardManager>
         <HStack justify={'center'} style={{margin:'2em'}}>
            <Link to={'/'}><StyledButton>Back</StyledButton></Link>
@@ -128,6 +115,24 @@ const StartDialog = styled(StyledEmptyDialog)`
   }
   
 `
+function Timer(countUp,countDown,mode) {
+  let timerElement = null;
+  const getTime = (elapsed) => {
+    const elapse = timeToString(secondToTime(elapsed));
+    const trimmed = elapse.substring(0,elapse.length - 2);
+    return trimmed;
+  }
+  if(mode === 'timed'){
+     timerElement = <p>꧁𓊈𒆜{getTime(countUp.elapsed)}𒆜𓊉꧂</p>
+  }else if(mode === 'attack'){
+     timerElement = <p>꧁𓊈𒆜{getTime(countDown.elapsed)}𒆜𓊉꧂</p>
+  }
+  
+  return <div className="timer">
+    {timerElement}
+  </div>;
+}
+
 function StartModal({onStart}){
   const modal = useRef();
   const [cTimer,setCTimer] = useState(3);
