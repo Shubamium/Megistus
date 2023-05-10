@@ -9,7 +9,7 @@
     --fontSans: 'Monserrat Alternates' , sans-serif;
 }
 body{
-    /* background-color: #262626; */
+    background-color: #262626;
     background-color: #121212;
 }
 
@@ -23,4 +23,26 @@ h2{
 
 p{
     font-family: var(--fontMain);
+}
+
+
+
+@keyframes inflate{
+    from{
+        /* letter-spacing: 10px; */
+        opacity: 1;
+      }
+      50%{
+        opacity: .5;
+        /* letter-spacing: 14px; */
+      }
+      to{
+        opacity: 1;
+        /* letter-spacing: 10px; */
+      }
+}
+.timer p{
+    animation: inflate 3s linear infinite;
+    animation-delay: 1s;
+    -webkit-animation: inflate 3s linear infinite;
 }

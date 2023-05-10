@@ -4,7 +4,7 @@ import astro from "./cards/astrology";
 import GameStartForm, { MODE } from "./components/GameStartForm";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import StyledDialog, { StyledEmptyDialog } from "./styled/StyledDialog";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import StyledButton from "./styled/StyledButton";
 import HStack from "./styled/layout/HStack";
 import generateSlots from "./util/CardGeneration";
@@ -29,8 +29,17 @@ import useCountdown from "./hooks/useCountdown";
 
 
 const StyledGameLayout = styled.div`
+  & .timer p{
+    text-align: center;
+    font-size: 2rem;
+    margin-top: .4em;
+    padding-top: .5em;
+    letter-spacing: 10px;
+  }
 
+  
 
+  
 `
 
 export default function Game() {
@@ -74,24 +83,27 @@ export default function Game() {
 
   const handleStart = ()=>{
     // if(gameStateData.mode === 'timed'){
-      countUp.startTimer();
-    // }else if(gameStateData.mode === 'attack'){
+    countUp.startTimer();
+    if(gameStateData.mode === 'attack'){
       countDown.startTimer();
-    // }
+    }
     setHasStarted(true);
   }
 
   let timerElement = null;
   if(gameStateData.mode === 'timed'){
-     timerElement = <p>{getTime(countUp.elapsed)}</p>
+     timerElement = <p>꧁𓊈𒆜{getTime(countUp.elapsed)}𒆜𓊉꧂</p>
   }else if(gameStateData.mode === 'attack'){
-     timerElement = <p>{getTime(countDown.elapsed)}</p>
+     timerElement = <p>꧁𓊈𒆜{getTime(countDown.elapsed)}𒆜𓊉꧂</p>
   }
+  
   return (
     <StyledGameLayout>
+        <div className="timer">
         {timerElement}
+        </div>
         <CardManager onWin={handleWin} cards={board || []} cardSet={astro} ></CardManager>
-        <HStack justify={'center'}>
+        <HStack justify={'center'} style={{margin:'2em'}}>
            <Link to={'/'}><StyledButton>Back</StyledButton></Link>
         </HStack>
         {!hasStarted && <StartModal onStart={handleStart}></StartModal>}
