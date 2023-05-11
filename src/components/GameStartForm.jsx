@@ -41,9 +41,10 @@ export default function GameStartForm({onSubmit,backButton}) {
     const modeRef =  useRef();
     const difficultyRef =  useRef();
     const cardStyleRef =  useRef();
+    const durationRef =  useRef();
 
     const [diff,setDiff] = useState(0);
-
+    const [isTimeAttack,setIsTimeAttack] = useState(false);
     function handleSubmit(e){
         e.preventDefault();
 
@@ -51,12 +52,14 @@ export default function GameStartForm({onSubmit,backButton}) {
         const _modeRef = modeRef.current.options[modeRef.current.selectedIndex].value;
         const _cardStyleRef = cardStyleRef.current.options[cardStyleRef.current.selectedIndex].value;
         const _difficultyRef = difficultyRef.current.value;
+        const _durationRef = durationRef.current.value;
 
         const gameStartData = {
             pairCount: parseInt(_pairCount),
             cardStyle: _cardStyleRef,
             difficulty: parseInt(_difficultyRef),
-            mode:_modeRef
+            mode:_modeRef,
+            duration:parseInt(_durationRef)
         }
 
         onSubmit && onSubmit(gameStartData);
@@ -66,12 +69,19 @@ export default function GameStartForm({onSubmit,backButton}) {
         setDiff(e.target.value);
     }
 
+    function handleMode(e){
+        if(e.target.options[e.target.selectedIndex].value === 'attack' ){
+            setIsTimeAttack(true);
+        }else{
+            setIsTimeAttack(false);
+        }
+    }
     return (
     <StyledGameStartForm onSubmit={handleSubmit}>
         <VStack style={{width:'50%'}}>
             <HStack align={'center'} justify={'stretch'}>
                 <label htmlFor="pair">Pair Count:</label>
-                <StyledInput type="number" min="0" max='49' required ref={pairCount} placeholder="Pair count. . ." />
+                <StyledInput type="number" min="0" max='49git' required ref={pairCount} placeholder="Pair count. . ." />
             </HStack>
             <HStack align={'center'} justify={'stretch'}>
                 <label htmlFor="pair">Difficulty:</label>
@@ -87,16 +97,18 @@ export default function GameStartForm({onSubmit,backButton}) {
                     <option value="japan">Japanese</option>
                     <option value="korean">Korean</option>
                     <option value="cyrilic">Cyrilic</option>
-                    <option value="wingding">Wingdings</option>
                 </StyledSelect>
             </HStack>
             <HStack align={'center'} justify={'stretch'}>
                 <label htmlFor="pair">Mode:</label>
-                <StyledSelect ref={modeRef} placeholder="Select the mode">
+                <StyledSelect ref={modeRef} onChange={handleMode} placeholder="Select the mode">
                     <option value="casual">Casual</option>
                     <option value="timed">Timed</option>
                     <option value="attack">Time Attack</option>
                 </StyledSelect>
+                {isTimeAttack && (
+                    <StyledInput style={{flexBasis:'25%'}} type="number" required ref={durationRef}  placeholder="Duration (s)" min="1" max="5000"></StyledInput>
+                )}
             </HStack>
             
         </VStack>
