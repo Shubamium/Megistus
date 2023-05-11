@@ -95,7 +95,7 @@ export default function Game() {
   const countUp = useCountup();
   const countDown = useCountdown(20,onTimesUp);
   
-  const currentSet = CardSet.astro;
+  const currentSet = CardSet.japan;
   function onTimesUp(){
     // alert('Time is up');
     navigate('/results',{state:{status:'Lose',time:getTime(countUp.elapsed)},timeLeft:(getTime(countDown.elapsed))})
