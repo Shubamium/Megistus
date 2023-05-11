@@ -107,7 +107,7 @@ const StyledCard = styled.div`
     right:8%;
 
     font-size:.9rem;
-    color:#222125c0;
+    color:#312f36c0;
   }
   & .status{
     opacity:.4;

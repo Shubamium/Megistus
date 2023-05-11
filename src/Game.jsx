@@ -7,10 +7,11 @@ import StyledDialog, { StyledEmptyDialog } from "./styled/StyledDialog";
 import styled, { keyframes } from "styled-components";
 import StyledButton from "./styled/StyledButton";
 import HStack from "./styled/layout/HStack";
-import generateSlots from "./util/CardGeneration";
+import generateSlots, { cutDifficulty } from "./util/CardGeneration";
 import useCountup from "./hooks/useCountup";
 import { secondToTime, timeToString } from "./util/Time";
 import useCountdown from "./hooks/useCountdown";
+import greek from "./cards/greek";
 
 // Feature List
 // ------- Main Feature
@@ -77,7 +78,11 @@ const StyledGameLayout = styled.div`
   }
   
 `
-
+const getTime = (elapsed) => {
+  const elapse = timeToString(secondToTime(elapsed));
+  const trimmed = elapse.substring(0,elapse.length - 2);
+  return trimmed;
+}
 export default function Game() {
   const [board,setBoard] = useState([]);
   const [hasStarted,setHasStarted] = useState(false);
@@ -107,7 +112,7 @@ export default function Game() {
   },[]);
 
   function initializeBoard(pCount){
-    const slot = generateSlots(pCount,astro);
+    const slot = generateSlots(pCount,greek,gameStateData?.difficulty);
     setBoard(slot);
   }
 
@@ -118,17 +123,17 @@ export default function Game() {
   const handleStart = ()=>{
     // if(gameStateData.mode === 'timed'){
     countUp.startTimer();
-    if(gameStateData.mode === 'attack'){
+    if(gameStateData?.mode === 'attack'){
       countDown.startTimer();
     }
     setHasStarted(true);
   }
 
-  const timerProps = {countDown:countDown,countUp:countUp,mode:gameStateData.mode}
+  const timerProps = {countDown:countDown,countUp:countUp,mode:gameStateData?.mode}
   return (
     <StyledGameLayout>
-        <Timer {...timerProps}/>
-        <CardManager onWin={handleWin} cards={board || []} cardSet={astro} ></CardManager>
+        {gameStateData.mode !== 'casual' && <Timer {...timerProps}/>}
+        <CardManager onWin={handleWin} cards={board || []} cardSet={greek} ></CardManager>
         <HStack justify={'end'} style={{margin:'2em'}}>
            <Link to={'/'}><StyledButton>Back</StyledButton></Link>
         </HStack>
@@ -156,17 +161,13 @@ const StartDialog = styled(StyledEmptyDialog)`
 `
 function Timer({countUp,countDown,mode}) {
   const [sideTime, setSideTime] = useState(false);
-  const getTime = (elapsed) => {
-    const elapse = timeToString(secondToTime(elapsed));
-    const trimmed = elapse.substring(0,elapse.length - 2);
-    return trimmed;
-  }
+  
 
   let timerElement = null;
   if(mode === 'timed'){
-     timerElement = <p>꧁𓊈𒆜{getTime(countUp.elapsed)}𒆜𓊉꧂</p>
+     timerElement = <p>꧁𓊈𒆜{getTime && getTime(countUp.elapsed)}𒆜𓊉꧂</p>
   }else if(mode === 'attack'){
-     timerElement = <p>꧁𓊈𒆜{getTime(countDown.elapsed)}𒆜𓊉꧂</p>
+     timerElement = <p>꧁𓊈𒆜{getTime && getTime(countDown.elapsed)}𒆜𓊉꧂</p>
   }
 
   let sideTimer = (
@@ -180,7 +181,6 @@ function Timer({countUp,countDown,mode}) {
       if(window.scrollY > 100){
         setSideTime(true);
       }else{
-        
         setSideTime(false);
       }
   }

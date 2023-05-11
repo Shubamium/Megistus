@@ -1,20 +1,23 @@
 import { SLOT_STATE } from "../CardManager";
+const diff = [2,4,10,15,100];
 
-export default function generateSlots(pairCount, cardSet) {
+export default function generateSlots(pairCount, cardSet,difficulty) {
   if (!cardSet) return [];
   const cardSetAmount = cardSet.length;
   const cardTemplate = {
     id: 10,
-    slotState: SLOT_STATE.CLOSED // let array = new Array(pairCount*2).fill({});
-    // array = array.map((slot)=>{
-    //   return createPair;
-    // });
+    slotState: SLOT_STATE.CLOSED 
 
   };
 
+  console.log('generating slots' + diff[difficulty]);
   const fillWithPair = arr => {
     for (let i = 0; i < pairCount; i++) {
-      const cardId = i % cardSetAmount;
+      let maxCard = cardSetAmount;
+      if(difficulty + 1 != null){
+        maxCard =diff[difficulty];
+      } 
+      const cardId = i % maxCard ;
       const pair = { ...cardTemplate,
         id: cardId
       };
@@ -27,6 +30,7 @@ export default function generateSlots(pairCount, cardSet) {
   array = shuffleCards(array);
   return array;
 }
+
 export function shuffleCards(cardSet) {
   let toReturn = [...cardSet];
 
@@ -45,3 +49,16 @@ export function shuffleCards(cardSet) {
   return toReturn;
 }
   
+
+export function cutDifficulty(cardSet,maxAmount){
+
+  const newArr = [];
+  for(let i = 0; i < maxAmount;i++){
+    if(cardSet[i]){
+      newArr.push(cardSet[i]); 
+    }
+  }
+
+  return newArr;
+  
+}
