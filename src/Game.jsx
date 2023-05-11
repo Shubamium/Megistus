@@ -95,7 +95,7 @@ export default function Game() {
   const countUp = useCountup();
   const countDown = useCountdown(20,onTimesUp);
   
-  const currentSet = CardSet.korean;
+  const currentSet = CardSet[gameStateData.cardStyle] || CardSet.astro;
   function onTimesUp(){
     // alert('Time is up');
     navigate('/results',{state:{status:'Lose',time:getTime(countUp.elapsed)},timeLeft:(getTime(countDown.elapsed))})
@@ -178,7 +178,6 @@ function Timer({countUp,countDown,mode}) {
   );
   
   function handleScroll(e){
-      console.log(window.scrollY);
       if(window.scrollY > 100){
         setSideTime(true);
       }else{
