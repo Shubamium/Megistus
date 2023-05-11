@@ -12,6 +12,7 @@ import useCountup from "./hooks/useCountup";
 import { secondToTime, timeToString } from "./util/Time";
 import useCountdown from "./hooks/useCountdown";
 import greek from "./cards/greek";
+import CardSet from "./cards/CardSet";
 
 // Feature List
 // ------- Main Feature
@@ -94,7 +95,7 @@ export default function Game() {
   const countUp = useCountup();
   const countDown = useCountdown(20,onTimesUp);
   
-
+  const currentSet = CardSet.astro;
   function onTimesUp(){
     // alert('Time is up');
     navigate('/results',{state:{status:'Lose',time:getTime(countUp.elapsed)},timeLeft:(getTime(countDown.elapsed))})
@@ -112,7 +113,7 @@ export default function Game() {
   },[]);
 
   function initializeBoard(pCount){
-    const slot = generateSlots(pCount,greek,gameStateData?.difficulty);
+    const slot = generateSlots(pCount,currentSet,gameStateData?.difficulty);
     setBoard(slot);
   }
 
@@ -133,7 +134,7 @@ export default function Game() {
   return (
     <StyledGameLayout>
         {gameStateData.mode !== 'casual' && <Timer {...timerProps}/>}
-        <CardManager onWin={handleWin} cards={board || []} cardSet={greek} ></CardManager>
+        <CardManager onWin={handleWin} cards={board || []} cardSet={currentSet} ></CardManager>
         <HStack justify={'end'} style={{margin:'2em'}}>
            <Link to={'/'}><StyledButton>Back</StyledButton></Link>
         </HStack>

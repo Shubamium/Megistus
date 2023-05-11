@@ -48,7 +48,7 @@ const StyledCard = styled.div`
     scale:1.2;
     opacity: 0;
     pointer-events: none;
-
+    position: absolute;
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
@@ -61,6 +61,7 @@ const StyledCard = styled.div`
     filter: invert(100%) drop-shadow(0px 0px 15px ${props => props.accent || '#ffffff'});
     scale:1.2;
     opacity: 1;
+
   }
 
   &::before{
@@ -110,7 +111,7 @@ const StyledCard = styled.div`
     color:#312f36c0;
   }
   & .status{
-    opacity:.4;
+    opacity:.1;
     font-size:.5rem;
     letter-spacing:4px;
     user-select:none;
@@ -138,6 +139,9 @@ export default function Card({
     onReveal && onReveal();
   };
 
+  const currentSet = {
+    
+  }
   let accentColor = ()=>{
     let color = '#3d60ff';
     if (slotState === SLOT_STATE.SELECTED) {

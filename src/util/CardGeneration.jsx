@@ -14,7 +14,7 @@ export default function generateSlots(pairCount, cardSet,difficulty) {
   const fillWithPair = arr => {
     for (let i = 0; i < pairCount; i++) {
       let maxCard = cardSetAmount;
-      if(difficulty + 1 != null){
+      if(difficulty + 1 != null && cardSetAmount > diff[difficulty]){
         maxCard =diff[difficulty];
       } 
       const cardId = i % maxCard ;
