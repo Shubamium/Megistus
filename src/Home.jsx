@@ -13,6 +13,7 @@ export default function Home() {
   const routes = {
     index:<Menu_Main/>,  // Required
     custom:<Menu_CustomMode/>,
+    campaign:<Menu_CampaignStage/>,
     modeSelect:<Menu_GameModeSelect/>
   }
   const [activeMenu,setActiveMenu] = useState('');
@@ -134,7 +135,7 @@ function Menu_GameModeSelect(){
       <VStack align={'center'}>
         <h2 className="title">Select the game mode:</h2>
         <div className="menu">
-          <StyledMenuButton onClick={()=>{showMenu('')}}>Campaign</StyledMenuButton>
+          <StyledMenuButton onClick={()=>{showMenu('campaign')}}>Campaign</StyledMenuButton>
           <StyledMenuButton onClick={()=>{showMenu('custom')}}>Custom</StyledMenuButton>
           <BackButton onClick={()=>{showMenu('')}}></BackButton>
         </div>
@@ -149,6 +150,7 @@ const StyledCustomMode = styled(StyledMenuPanel)`
   align-items: center;
   gap: 1em;
 `
+
 function Menu_CustomMode(){
   const {showMenu,navigate} = useMenuNavigate();
   function startGame(gameStartData){
@@ -162,6 +164,23 @@ function Menu_CustomMode(){
   )
 }
 
+function Menu_CampaignStage(){
+  const {showMenu,navigate} = useMenuNavigate();
+  return (
+    <StyledCustomMode>
+      <h2 className="title">Campaign</h2>
+      <VStack>
+        <StyledMenuButton>Stage 1 - Astrology</StyledMenuButton>
+        <StyledMenuButton>Stage 2 - Greek</StyledMenuButton>
+        <StyledMenuButton>Stage 3 - Cyrilic</StyledMenuButton>
+        <StyledMenuButton>Stage 4 - Japanese</StyledMenuButton>
+        <StyledMenuButton>Stage 5 - Korean</StyledMenuButton>
+        <StyledMenuButton>Final Stage</StyledMenuButton>
+        <StyledMenuButton onClick={()=>{showMenu('modeSelect')}}>Back</StyledMenuButton>
+      </VStack>
+    </StyledCustomMode>
+  )
+}
 function useMenuNavigate(){
   const {showMenu} = useContext(MenuContext);
   const navigate= useNavigate(MenuContext);
