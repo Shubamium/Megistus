@@ -31,6 +31,7 @@ export const StyledMenuButton = styled(StyledButton)`
     display: block;
     position:relative;
     z-index: 4;
+    background:${props => props.bgColor};
     &:hover{
         scale:1.02;
         &::before{

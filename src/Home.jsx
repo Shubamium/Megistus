@@ -118,7 +118,7 @@ const StyledMainMenu = styled(StyledMenuPanel)`
     }
     
 `
-const BackButton = ({onClick})=><StyledMenuButton bgColor={"#11111173"} onClick={onClick}>Back</StyledMenuButton>;
+const BackButton = ({onClick})=><StyledMenuButton bgColor={"#2a1f3f73"} onClick={onClick}>Back</StyledMenuButton>;
 function Menu_Main(){
   const {showMenu} = useMenuNavigate();
   return (
@@ -219,10 +219,10 @@ function Menu_LevelSelect(){
           <StyledMenuButton onClick={()=>{loadLevel(5)}}>{stageNumber} - <b>5</b></StyledMenuButton>
         </HStack>
         <HStack>
-            <StyledMenuButton onClick={()=>{loadLevel(6)}}>EX - STAGE</StyledMenuButton>
-            <StyledMenuButton bgColor="green" onClick={()=>{loadLevel(7)}}>Zen Mode</StyledMenuButton>
+            <StyledMenuButton bgColor="linear-gradient(160deg, #ffff50b2 0%, #2a1138 100%)" onClick={()=>{loadLevel(6)}}>EX - STAGE</StyledMenuButton>
+            <StyledMenuButton bgColor="linear-gradient(160deg, #66ff50b1 0%,  #2a1138 100%)" onClick={()=>{loadLevel(7)}}>Zen Mode</StyledMenuButton>
         </HStack>
-        <StyledMenuButton onClick={()=>{showMenu('campaign')}}>Back</StyledMenuButton>
+        <StyledMenuButton onClick={()=>{showMenu('campaign')}} style={{margin:'2em'}}>Back</StyledMenuButton>
       </VStack>
     </StyledCustomMode>
   )
