@@ -27,6 +27,7 @@ const StyledButton = styled.button`
 
 export const StyledMenuButton = styled(StyledButton)`
     width:100%;
+    white-space: nowrap;
     display: block;
     position:relative;
     z-index: 4;

@@ -8,13 +8,15 @@ import HStack from "./styled/layout/HStack";
 
 
 const MenuContext = createContext();
+const LevelContext = createContext();
 
 export default function Home() {
   const routes = {
     index:<Menu_Main/>,  // Required
     custom:<Menu_CustomMode/>,
     campaign:<Menu_CampaignStage/>,
-    modeSelect:<Menu_GameModeSelect/>
+    modeSelect:<Menu_GameModeSelect/>,
+    levelSelect:<Menu_LevelSelect/>
   }
   const [activeMenu,setActiveMenu] = useState('');
   
@@ -23,11 +25,18 @@ export default function Home() {
     setActiveMenu(route);
   }
 
+  const [levelConfig,setLevelConfig] = useState({});
+
+  function handleSelectLevel(setLevel){
+    setLevelConfig(setLevel);
+  }
   return (
     <div>
-      <MenuContext.Provider value={{showMenu}}>
-        <MenuRenderer route={routes} activeMenu={activeMenu}></MenuRenderer>
-      </MenuContext.Provider>
+      <LevelContext.Provider value={{handleSelectLevel,levelConfig}}>
+        <MenuContext.Provider value={{showMenu}}>
+          <MenuRenderer route={routes} activeMenu={activeMenu}></MenuRenderer>
+        </MenuContext.Provider>
+      </LevelContext.Provider>
     </div>
   )
 }
@@ -166,21 +175,50 @@ function Menu_CustomMode(){
 
 function Menu_CampaignStage(){
   const {showMenu,navigate} = useMenuNavigate();
+  const {handleSelectLevel} = useContext(LevelContext);
+  function handleSelectStage(stage,id){
+    handleSelectLevel({card:stage,id});
+    showMenu('levelSelect');
+  }
+
   return (
     <StyledCustomMode>
       <h2 className="title">Campaign</h2>
       <VStack>
-        <StyledMenuButton>Stage 1 - Astrology</StyledMenuButton>
-        <StyledMenuButton>Stage 2 - Greek</StyledMenuButton>
-        <StyledMenuButton>Stage 3 - Cyrilic</StyledMenuButton>
-        <StyledMenuButton>Stage 4 - Japanese</StyledMenuButton>
-        <StyledMenuButton>Stage 5 - Korean</StyledMenuButton>
+        <StyledMenuButton onClick={()=>{handleSelectStage('astro',1)}}>Stage 1 - Astrology</StyledMenuButton>
+        <StyledMenuButton onClick={()=>{handleSelectStage('greek',2)}}>Stage 2 - Greek</StyledMenuButton>
+        <StyledMenuButton onClick={()=>{handleSelectStage('cyrilic',3)}}>Stage 3 - Cyrilic</StyledMenuButton>
+        <StyledMenuButton onClick={()=>{handleSelectStage('japan',4)}}>Stage 4 - Japanese</StyledMenuButton>
+        <StyledMenuButton onClick={()=>{handleSelectStage('korean',5)}}>Stage 5 - Korean</StyledMenuButton>
         <StyledMenuButton>Final Stage</StyledMenuButton>
         <StyledMenuButton onClick={()=>{showMenu('modeSelect')}}>Back</StyledMenuButton>
       </VStack>
     </StyledCustomMode>
   )
 }
+function Menu_LevelSelect(){
+  const {showMenu,navigate} = useMenuNavigate();
+  const {levelConfig} = useContext(LevelContext);
+  const stageNumber = levelConfig.id;
+  const card = levelConfig.card;
+  return (
+    <StyledCustomMode>
+      <VStack justify={'center'} align={'center'} style={{height:'100%'}}>
+        <h2 className="title">Stage {card.toUpperCase() || 0}</h2>
+        <HStack>
+          <StyledMenuButton>{stageNumber} - <b>1</b></StyledMenuButton>
+          <StyledMenuButton>{stageNumber} - <b>2</b></StyledMenuButton>
+          <StyledMenuButton>{stageNumber} - <b>3</b></StyledMenuButton>
+          <StyledMenuButton>{stageNumber} - <b>4</b></StyledMenuButton>
+          <StyledMenuButton>{stageNumber} - <b>5</b></StyledMenuButton>
+        </HStack>
+        <StyledMenuButton onClick={()=>{showMenu('campaign')}}>Back</StyledMenuButton>
+      </VStack>
+    </StyledCustomMode>
+  )
+}
+
+
 function useMenuNavigate(){
   const {showMenu} = useContext(MenuContext);
   const navigate= useNavigate(MenuContext);
