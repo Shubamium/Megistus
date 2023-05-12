@@ -52,7 +52,10 @@ export default function GameStartForm({onSubmit,backButton}) {
         const _modeRef = modeRef.current.options[modeRef.current.selectedIndex].value;
         const _cardStyleRef = cardStyleRef.current.options[cardStyleRef.current.selectedIndex].value;
         const _difficultyRef = difficultyRef.current.value;
-        const _durationRef = durationRef.current.value;
+        let _durationRef = 0;
+        if(durationRef && durationRef.current && durationRef.current.value){
+            _durationRef = durationRef.current.value || 0;
+        }
 
         const gameStartData = {
             pairCount: parseInt(_pairCount),
