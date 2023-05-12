@@ -5,6 +5,7 @@ import { createContext, useContext, useEffect, useState } from "react";
 import StyledButton, { StyledMenuButton } from "./styled/StyledButton";
 import VStack from "./styled/layout/VStack";
 import HStack from "./styled/layout/HStack";
+import { getBaseGameStartData } from "./cards/LevelConfig";
 
 
 const MenuContext = createContext();
@@ -201,16 +202,25 @@ function Menu_LevelSelect(){
   const {levelConfig} = useContext(LevelContext);
   const stageNumber = levelConfig.id;
   const card = levelConfig.card;
+
+  function loadLevel(level){
+    const gameStartData = getBaseGameStartData(level-1,card);
+    navigate('/game',{state:gameStartData})
+  }
   return (
     <StyledCustomMode>
       <VStack justify={'center'} align={'center'} style={{height:'100%'}}>
         <h2 className="title">Stage {card.toUpperCase() || 0}</h2>
         <HStack>
-          <StyledMenuButton>{stageNumber} - <b>1</b></StyledMenuButton>
-          <StyledMenuButton>{stageNumber} - <b>2</b></StyledMenuButton>
-          <StyledMenuButton>{stageNumber} - <b>3</b></StyledMenuButton>
-          <StyledMenuButton>{stageNumber} - <b>4</b></StyledMenuButton>
-          <StyledMenuButton>{stageNumber} - <b>5</b></StyledMenuButton>
+          <StyledMenuButton onClick={()=>{loadLevel(1)}}>{stageNumber} - <b>1</b></StyledMenuButton>
+          <StyledMenuButton onClick={()=>{loadLevel(2)}}>{stageNumber} - <b>2</b></StyledMenuButton>
+          <StyledMenuButton onClick={()=>{loadLevel(3)}}>{stageNumber} - <b>3</b></StyledMenuButton>
+          <StyledMenuButton onClick={()=>{loadLevel(4)}}>{stageNumber} - <b>4</b></StyledMenuButton>
+          <StyledMenuButton onClick={()=>{loadLevel(5)}}>{stageNumber} - <b>5</b></StyledMenuButton>
+        </HStack>
+        <HStack>
+            <StyledMenuButton onClick={()=>{loadLevel(6)}}>EX - STAGE</StyledMenuButton>
+            <StyledMenuButton bgColor="green" onClick={()=>{loadLevel(7)}}>Zen Mode</StyledMenuButton>
         </HStack>
         <StyledMenuButton onClick={()=>{showMenu('campaign')}}>Back</StyledMenuButton>
       </VStack>

@@ -1,6 +1,7 @@
 import { SLOT_STATE } from "../CardManager";
 const diff = [2,6,14,25,100];
 
+
 export default function generateSlots(pairCount, cardSet,difficulty) {
   if (!cardSet) return [];
   const cardSetAmount = cardSet.length;
