@@ -213,7 +213,8 @@ const StyledHistory = styled(StyledMenuPanel)`
   flex-direction: column;
   align-items: center;
   gap: 1em;
-
+  
+  
   & .leader-list{
     background-color: #09080a;
     width:100%;
@@ -222,7 +223,11 @@ const StyledHistory = styled(StyledMenuPanel)`
     padding:2em;
     border-radius:2em;
     gap:1em;
-
+    min-height:440px;
+    & .loading-message{
+      animation:inflate 2s infinite;
+      font-size: 2rem;
+    }
     & .row{
       background:#16161a;
       width:100%;
@@ -261,7 +266,7 @@ function Menu_History(){
   const {showMenu,navigate} = useMenuNavigate();
   const [pageSkip,setPageSkip] = useState(0);
 
-  const [leaderList,setLeaderList] = useState([]);
+  const [leaderList,setLeaderList] = useState(null);
   const [interactable,setInteractable] = useState(true);
   useEffect(()=>{
 
@@ -296,17 +301,21 @@ function Menu_History(){
       return res;
     });
     setInteractable(false);
+    setTimeout(()=>{
+      setInteractable(true);
+    },5000)
   }
   return (
     <StyledHistory>
       <h2 className="title">History</h2>
       <VStack className="leader-list">
+        {!leaderList && <p className="loading-message">Loading Data . . .</p> }
         {leaderList && renderLeaderList()}
       </VStack>
       <HStack align={'center'}>
         {pageSkip !== 0 && <StyledMenuButton disabled={!interactable} onClick={()=>{changePage(-5)}}>Prev</StyledMenuButton> }
         <p>{pageNumber}</p>
-        {leaderList.length > 0 && <StyledMenuButton disabled={!interactable} onClick={()=>{changePage(5)}}>Next</StyledMenuButton>}
+        {leaderList && leaderList.length > 0 && <StyledMenuButton disabled={!interactable} onClick={()=>{changePage(5)}}>Next</StyledMenuButton>}
       </HStack>
       <BackButton onClick={()=>{showMenu('')}}/>
       
