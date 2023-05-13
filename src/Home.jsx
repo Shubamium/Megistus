@@ -259,24 +259,26 @@ const StyledHistory = styled(StyledMenuPanel)`
 `
 function Menu_History(){
   const {showMenu,navigate} = useMenuNavigate();
-  const {pageSkip,setPageSkip} = useState(0);
+  const [pageSkip,setPageSkip] = useState(0);
 
   const [leaderList,setLeaderList] = useState([]);
+  const [interactable,setInteractable] = useState(true);
   useEffect(()=>{
 
     async function getData(pageSkip){
       const dbData = await loadData(pageSkip);
       setLeaderList(dbData);
+      setInteractable(true);
     }
-    getData()
+    getData(pageSkip);
     
   },[pageSkip]);
 
 
   function renderLeaderList(){
-    return leaderList.map((data)=>{
+    return leaderList.map((data,index)=>{
       return(
-        <div className="row">
+        <div className="row" key={index}>
             <img src={CardSet[data.card][3]} alt="card" className="set-icon"/>
             <p>{data.name}</p>
             <p>{data.date}</p>
@@ -287,12 +289,24 @@ function Menu_History(){
       )
     })
   }
+
+  function changePage(page){
+    setPageSkip((prev)=>{
+      let res = prev + page;
+      return res;
+    });
+    setInteractable(false);
+  }
   return (
     <StyledHistory>
       <h2 className="title">History</h2>
       <VStack className="leader-list">
         {leaderList && renderLeaderList()}
       </VStack>
+      <HStack>
+        {pageSkip !== 0 && <StyledMenuButton disabled={!interactable} onClick={()=>{changePage(-5)}}>Prev</StyledMenuButton> }
+       {leaderList.length > 0 && <StyledMenuButton disabled={!interactable} onClick={()=>{changePage(5)}}>Next</StyledMenuButton>}
+      </HStack>
       <BackButton onClick={()=>{showMenu('')}}/>
       
     </StyledHistory>
