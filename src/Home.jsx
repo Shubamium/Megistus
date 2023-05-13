@@ -1,5 +1,5 @@
 import { Route, useNavigate } from "react-router-dom";
-import GameStartForm from "./components/GameStartForm";
+import GameStartForm, { DIFFICULTY } from "./components/GameStartForm";
 import styled from "styled-components";
 import { createContext, useContext, useEffect, useState } from "react";
 import StyledButton, { StyledMenuButton } from "./styled/StyledButton";
@@ -7,6 +7,7 @@ import VStack from "./styled/layout/VStack";
 import HStack from "./styled/layout/HStack";
 import { getBaseGameStartData } from "./cards/LevelConfig";
 import { loadData } from "./util/db";
+import CardSet from "./cards/CardSet";
 
 
 const MenuContext = createContext();
@@ -183,7 +184,7 @@ const StyledHistory = styled(StyledMenuPanel)`
   gap: 1em;
 
   & .leader-list{
-    background-color: #0f0e10;
+    background-color: #09080a;
     width:100%;
     display:flex;
     flex-direction: column;
@@ -197,8 +198,30 @@ const StyledHistory = styled(StyledMenuPanel)`
       border-radius: 2em;
       padding:.5em 1em;
       display: grid;
-      grid-template-columns:40px 1fr 1fr 1fr;
+      grid-template-columns:40px 1fr 1fr 1fr 1fr 1fr;
       gap: 1em;
+      align-items: center;
+      transition: all 250ms ease;
+      box-shadow:0px 0px 8px #050506;
+      & .set-icon{
+        max-height: 40px;
+        width:40px;
+        aspect-ratio: 1/1;
+        object-fit:contain;
+        background-color:#fafafa;
+        padding:.4em;
+        border-radius:1em;
+        filter:invert(100%);
+      }
+
+      & p{
+        letter-spacing: 5px;
+        white-space: nowrap;
+      }
+    }
+
+    & .row:hover{
+      scale: 1.02;
     }
   }
 
@@ -223,8 +246,12 @@ function Menu_History(){
     return leaderList.map((data)=>{
       return(
         <div className="row">
-            <img src="" alt="" />
+            <img src={CardSet[data.card][3]} alt="card" className="set-icon"/>
             <p>{data.name}</p>
+            <p>{data.date}</p>
+            <p>{data.type}</p>
+            <p>{data.pair} Pair</p>
+            <p>{data.mode} - {data.time}</p>
         </div>
       )
     })

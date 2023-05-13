@@ -13,7 +13,7 @@ import { secondToTime, timeToString } from "./util/Time";
 import useCountdown from "./hooks/useCountdown";
 import greek from "./cards/greek";
 import CardSet from "./cards/CardSet";
-import saveData from "./util/db";
+import {saveData} from "./util/db";
 
 // Feature List
 // ------- Main Feature
