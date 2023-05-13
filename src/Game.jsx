@@ -96,6 +96,7 @@ export default function Game() {
 
   const usernameContext = useContext(UserContext);
   const [username,_] = usernameContext;
+  
   const countUp = useCountup();
   const countDown = useCountdown(gameStateData.duration || 60,onTimesUp);
   
