@@ -22,7 +22,8 @@ export default function Home() {
     campaign:<Menu_CampaignStage/>,
     modeSelect:<Menu_GameModeSelect/>,
     levelSelect:<Menu_LevelSelect/>,
-    history:<Menu_History/>
+    history:<Menu_History/>,
+    about:<Menu_About/>
   }
   const [activeMenu,setActiveMenu] = useState('');
   
@@ -151,7 +152,7 @@ function Menu_Main(){
           <div className="menu">
             <StyledMenuButton onClick={()=>{showMenu('modeSelect')}}>✧ Start ✧</StyledMenuButton>
             <StyledMenuButton onClick={()=>{showMenu('history')}}>History</StyledMenuButton>
-            <StyledMenuButton>About</StyledMenuButton>
+            <StyledMenuButton onClick={()=>{showMenu('about')}}>About</StyledMenuButton>
           </div>
       </VStack>
 
@@ -346,6 +347,7 @@ function Menu_CampaignStage(){
     </StyledCustomMode>
   )
 }
+
 function Menu_LevelSelect(){
   const {showMenu,navigate} = useMenuNavigate();
   const {levelConfig} = useContext(LevelContext);
@@ -377,6 +379,33 @@ function Menu_LevelSelect(){
   )
 }
 
+
+const StyledAbout = styled(StyledMenuPanel)`
+
+`
+function Menu_About(){
+  const {showMenu,navigate} = useMenuNavigate();
+  function startGame(gameStartData){
+    navigate('/game',{state:gameStartData});
+  }
+
+  return (
+    <StyledCustomMode>
+      <h2 className="title">About</h2>
+      <p>Welcome to <b>Megistus</b>, an astrology-themed card memorization game that will test your memory skills and knowledge of astrology symbols! In this game, you'll be tasked with memorizing a deck of cards that features different astrology symbols. Your goal is to pick a pair of cards and reveal them. If the cards match, they will stay revealed until all cards have been matched.</p>
+      
+      <h2>How To Play</h2>
+      <ol>
+        <li>Start by picking a game mode, you can go through the campaign or pick the difficulty on custom mode.</li>
+        <li>Flip over any two cards by clicking them to reveal their astrology symbols. If the symbols on the cards match, the cards will stay revealed. If they don't match, remember the symbols and their location and try again.</li>
+        <li>Continue revealing pairs of cards until all cards have been matched.</li>
+        <li>Keep track of the time it takes you to match all the cards. Try to beat your previous times and challenge your friends to see who can match all the cards the fastest. </li>
+        <li>Enjoy the game and have fun!</li>
+      </ol>
+      <BackButton onClick={()=>{showMenu('')}}></BackButton>
+    </StyledCustomMode>
+  )
+}
 
 function useMenuNavigate(){
   const {showMenu} = useContext(MenuContext);
