@@ -1,11 +1,11 @@
-import React from 'react'
+import React, { createContext } from 'react'
 import ReactDOM from 'react-dom/client'
 import './index.css'
 import Game from './Game.jsx'
 import { RouterProvider, createBrowserRouter } from 'react-router-dom'
 import Home from './Home'
 import Results from './Results'
- 
+import UserContextProvider from './context/UsernameContext'
 const route = createBrowserRouter([{
   path:'/',
   element:<Home/>
@@ -16,9 +16,12 @@ const route = createBrowserRouter([{
   path:'/results',
   element:<Results/>
 }]);
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <RouterProvider router={route}>
-    </RouterProvider>
+    <UserContextProvider>
+      <RouterProvider router={route}>
+      </RouterProvider>
+    </UserContextProvider>
   </React.StrictMode>,
 )

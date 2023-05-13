@@ -14,6 +14,8 @@ import useCountdown from "./hooks/useCountdown";
 import greek from "./cards/greek";
 import CardSet from "./cards/CardSet";
 import {saveData} from "./util/db";
+import { useContext } from "react";
+import { UserContext } from "./context/UsernameContext";
 
 // Feature List
 // ------- Main Feature
@@ -92,7 +94,8 @@ export default function Game() {
   const {state:gameStateData} = useLocation();
   const navigate = useNavigate();
 
-
+  const usernameContext = useContext(UserContext);
+  const [username,_] = usernameContext;
   const countUp = useCountup();
   const countDown = useCountdown(gameStateData.duration || 60,onTimesUp);
   
@@ -122,10 +125,9 @@ export default function Game() {
   function handleWin(){
     const gameResult = {status:'Win',time:getTime(countUp.elapsed)};
     navigate('/results',{state:{gameResult,...gameStateData}})
-    
     const date = new Date();
     const gameResultAPI = {
-      name:"Anonymous",
+      name:username || "Anonymous",
       card:gameStateData.cardStyle,
       pair:gameStateData.pairCount,
       mode:gameStateData.mode,

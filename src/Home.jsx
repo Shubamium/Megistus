@@ -9,11 +9,11 @@ import { getBaseGameStartData } from "./cards/LevelConfig";
 import { loadData } from "./util/db";
 import CardSet from "./cards/CardSet";
 import StyledInput from "./styled/StyledInput";
+import { UserContext } from "./context/UsernameContext";
 
 
 const MenuContext = createContext();
 const LevelContext = createContext();
-const UserContext = createContext();
 
 export default function Home() {
   const routes = {
@@ -33,20 +33,17 @@ export default function Home() {
 
   const [levelConfig,setLevelConfig] = useState({});
 
-  const username = useState("Anonymous");
 
   function handleSelectLevel(setLevel){
     setLevelConfig(setLevel);
   }
   return (
     <div>
-      <UserContext.Provider value={username}>
         <LevelContext.Provider value={{handleSelectLevel,levelConfig}}>
           <MenuContext.Provider value={{showMenu}}>
             <MenuRenderer route={routes} activeMenu={activeMenu}></MenuRenderer>
           </MenuContext.Provider>
         </LevelContext.Provider>
-      </UserContext.Provider>
     </div>
   )
 }
