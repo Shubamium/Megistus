@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import CardManager from "./CardManager";
 import astro from "./cards/astrology";
-import GameStartForm, { MODE } from "./components/GameStartForm";
+import GameStartForm, { DIFFICULTY, MODE } from "./components/GameStartForm";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import StyledDialog, { StyledEmptyDialog } from "./styled/StyledDialog";
 import styled, { keyframes } from "styled-components";
@@ -13,6 +13,7 @@ import { secondToTime, timeToString } from "./util/Time";
 import useCountdown from "./hooks/useCountdown";
 import greek from "./cards/greek";
 import CardSet from "./cards/CardSet";
+import saveData from "./util/db";
 
 // Feature List
 // ------- Main Feature
@@ -99,8 +100,8 @@ export default function Game() {
 
   function onTimesUp(){
     // alert('Time is up');
-    navigate('/results',{state:{status:'Lose',time:getTime(countUp.elapsed)},timeLeft:(getTime(countDown.elapsed))})
-
+    const gameResult = {status:'Lose',time:getTime(countUp.elapsed),timeLeft:getTime(countDown.elapsed)};
+    navigate('/results',{state:{gameResult,...gameStateData}})
   }
  
 
@@ -119,8 +120,24 @@ export default function Game() {
   }
 
   function handleWin(){
-    navigate('/results',{state:{status:'Win',time:getTime(countUp.elapsed)}})
+    const gameResult = {status:'Win',time:getTime(countUp.elapsed)};
+    navigate('/results',{state:{gameResult,...gameStateData}})
+    
+    const date = new Date();
+    const gameResultAPI = {
+      name:"Anonymous",
+      card:gameStateData.cardStyle,
+      pair:gameStateData.pairCount,
+      mode:gameStateData.mode,
+      date:date.toDateString(),
+      time:gameResult.time,
+      diff:DIFFICULTY[gameStateData.difficulty],
+      type:gameStateData.levelType
+    }
+    saveData(gameResultAPI);
   }
+  
+
 
   const handleStart = ()=>{
     // if(gameStateData.mode === 'timed'){

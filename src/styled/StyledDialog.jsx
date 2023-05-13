@@ -11,6 +11,7 @@ const StyledDialog = styled.dialog`
 
     &::backdrop{
         background-color: #000000aa;
+        border: none;
     }
 `;
 
@@ -19,14 +20,16 @@ export const StyledEmptyDialog = styled.dialog`
 
     width: 100%;
     height: 100%;
+    border: none;
     
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction:column;
-    
     &::backdrop{
         background-color: #000000aa;
+      border: none;
+
     }
 `;
 

@@ -139,9 +139,7 @@ export default function Card({
     onReveal && onReveal();
   };
 
-  const currentSet = {
-    
-  }
+ 
   let accentColor = ()=>{
     let color = '#3d60ff';
     if (slotState === SLOT_STATE.SELECTED) {

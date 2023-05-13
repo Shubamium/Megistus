@@ -23,7 +23,7 @@ const StyledGameStartForm = styled.form`
     }
 `
 
-const DIFFICULTY = ['Very Easy','Easy','Medium','Hard','Insane'];
+export const DIFFICULTY = ['Very Easy','Easy','Medium','Hard','Insane'];
 
 
 export const MODE = {
@@ -62,6 +62,7 @@ export default function GameStartForm({onSubmit,backButton}) {
             cardStyle: _cardStyleRef,
             difficulty: parseInt(_difficultyRef),
             mode:_modeRef,
+            levelType:'custom',
             duration:parseInt(_durationRef)
         }
 

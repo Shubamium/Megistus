@@ -25,11 +25,12 @@ export default function Results({location}) {
         if(!state){
             navigate('/');
         }
+        console.log(state);
     },[])
     return (
         <StyledResultPanel>
-            <h2 className="title">Game {state.status}</h2>
-            <p>Time:{state.time || '00:00:00'}</p>
+            <h2 className="title">Game {state.gameResult.status}</h2>
+            <p>Time:{state.gameResult.time || '00:00:00'}</p>
             <p></p>
             <HStack>
                 <Link to={-1}><StyledButton>Retry</StyledButton></Link>
