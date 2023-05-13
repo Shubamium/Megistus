@@ -8,10 +8,12 @@ import HStack from "./styled/layout/HStack";
 import { getBaseGameStartData } from "./cards/LevelConfig";
 import { loadData } from "./util/db";
 import CardSet from "./cards/CardSet";
+import StyledInput from "./styled/StyledInput";
 
 
 const MenuContext = createContext();
 const LevelContext = createContext();
+const UserContext = createContext();
 
 export default function Home() {
   const routes = {
@@ -36,11 +38,13 @@ export default function Home() {
   }
   return (
     <div>
-      <LevelContext.Provider value={{handleSelectLevel,levelConfig}}>
-        <MenuContext.Provider value={{showMenu}}>
-          <MenuRenderer route={routes} activeMenu={activeMenu}></MenuRenderer>
-        </MenuContext.Provider>
-      </LevelContext.Provider>
+      <UserContext.Provider>
+        <LevelContext.Provider value={{handleSelectLevel,levelConfig}}>
+          <MenuContext.Provider value={{showMenu}}>
+            <MenuRenderer route={routes} activeMenu={activeMenu}></MenuRenderer>
+          </MenuContext.Provider>
+        </LevelContext.Provider>
+      </UserContext.Provider>
     </div>
   )
 }
@@ -122,8 +126,14 @@ const StyledMainMenu = styled(StyledMenuPanel)`
     
 `
 const BackButton = ({onClick})=><StyledMenuButton bgColor={"#2a1f3f73"} onClick={onClick}>Back</StyledMenuButton>;
+
 function Menu_Main(){
   const {showMenu} = useMenuNavigate();
+  const [status,setStatus] = useState("Username changed!");
+  function handleChangeName(e){
+    e.preventDefault();
+  }
+  const styleCenter = {textAlign:'center',letterSpacing:'4px',margin:'1em'};
   return (
     <StyledMainMenu>
       <VStack align={'center'}>
@@ -135,6 +145,16 @@ function Menu_Main(){
             <StyledMenuButton>About</StyledMenuButton>
           </div>
       </VStack>
+          <HStack justify={'center'}>
+                <form onSubmit={handleChangeName}>
+                    <p style={styleCenter}>Set Username:</p>
+                    <HStack>
+                      <StyledInput type="text" max={20} placeholder="Enter your username. . ."></StyledInput>
+                      <StyledMenuButton type={'submit'}>Set</StyledMenuButton>
+                    </HStack>
+                    <p style={styleCenter}>{status}</p>
+                </form>
+          </HStack>
     </StyledMainMenu>
   )
 }
