@@ -22,18 +22,18 @@ export function saveData(gameResult){
 
 }
 
-
-
 export async function loadData(skip){
 
     const urlRes = getApiRoute();
     urlRes.searchParams.append('max',5);
+    urlRes.searchParams.append('sort','_created');
+    urlRes.searchParams.append('dir','-1');
     if(skip){
         urlRes.searchParams.append('skip',skip);
     }
     const result = await fetch(urlRes);
     const data = await result.json();
     console.log(result.data);
-
+    
     return data;
 }
