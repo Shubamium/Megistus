@@ -18,9 +18,14 @@ const StyledButton = styled.button`
         cursor: pointer;
 
     }
-
+ 
     &:active{
         scale:.95;
+    }
+    &:disabled{
+        scale:.8;
+        filter:brightness(20%);
+        cursor:not-allowed;
     }
    
 `
@@ -38,7 +43,9 @@ export const StyledMenuButton = styled(StyledButton)`
             scale:1 1.1;
             opacity:1;
         }
+       
     }
+ 
     &::before{
         transition: all 150ms ease;
         content: "";
@@ -53,6 +60,11 @@ export const StyledMenuButton = styled(StyledButton)`
         scale: 1 .9;
         opacity:0;
     }
-    
+    &:disabled{
+        scale:.95;
+        &::before{
+            opacity: 0;
+        }
+    }
 `
 export default StyledButton;
