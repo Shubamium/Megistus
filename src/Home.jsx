@@ -1,7 +1,7 @@
 import { Route, useNavigate } from "react-router-dom";
 import GameStartForm, { DIFFICULTY } from "./components/GameStartForm";
 import styled from "styled-components";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import StyledButton, { StyledMenuButton } from "./styled/StyledButton";
 import VStack from "./styled/layout/VStack";
 import HStack from "./styled/layout/HStack";
@@ -33,12 +33,14 @@ export default function Home() {
 
   const [levelConfig,setLevelConfig] = useState({});
 
+  const username = useState("Anonymous");
+
   function handleSelectLevel(setLevel){
     setLevelConfig(setLevel);
   }
   return (
     <div>
-      <UserContext.Provider>
+      <UserContext.Provider value={username}>
         <LevelContext.Provider value={{handleSelectLevel,levelConfig}}>
           <MenuContext.Provider value={{showMenu}}>
             <MenuRenderer route={routes} activeMenu={activeMenu}></MenuRenderer>
@@ -129,9 +131,19 @@ const BackButton = ({onClick})=><StyledMenuButton bgColor={"#2a1f3f73"} onClick=
 
 function Menu_Main(){
   const {showMenu} = useMenuNavigate();
-  const [status,setStatus] = useState("Username changed!");
+  const [status,setStatus] = useState("");
+
+  const [username, setUsername] = useContext(UserContext);
+  const usernameRef = useRef();
   function handleChangeName(e){
     e.preventDefault();
+    if(usernameRef && usernameRef.current){
+      setUsername(usernameRef.current.value);
+      setStatus('Username Changed');
+      setTimeout(()=>{
+        setStatus("");
+      },1500);
+    }
   }
   const styleCenter = {textAlign:'center',letterSpacing:'4px',margin:'1em'};
   return (
@@ -145,16 +157,18 @@ function Menu_Main(){
             <StyledMenuButton>About</StyledMenuButton>
           </div>
       </VStack>
-          <HStack justify={'center'}>
-                <form onSubmit={handleChangeName}>
-                    <p style={styleCenter}>Set Username:</p>
-                    <HStack>
-                      <StyledInput type="text" max={20} placeholder="Enter your username. . ."></StyledInput>
-                      <StyledMenuButton type={'submit'}>Set</StyledMenuButton>
-                    </HStack>
-                    <p style={styleCenter}>{status}</p>
-                </form>
-          </HStack>
+
+      <HStack justify={'center'}>
+            <form onSubmit={handleChangeName}>
+                <p style={styleCenter}>Hello, {username}</p>
+                <HStack>
+                  <StyledInput ref={usernameRef} type="text" max={20} defaultValue={username} placeholder="Enter your username. . ."></StyledInput>
+                  <StyledMenuButton type={'submit'}>Set</StyledMenuButton>
+                </HStack>
+                <p style={styleCenter}>{status}</p>
+            </form>
+      </HStack>
+
     </StyledMainMenu>
   )
 }
