@@ -6,6 +6,7 @@ import StyledButton, { StyledMenuButton } from "./styled/StyledButton";
 import VStack from "./styled/layout/VStack";
 import HStack from "./styled/layout/HStack";
 import { getBaseGameStartData } from "./cards/LevelConfig";
+import { loadData } from "./util/db";
 
 
 const MenuContext = createContext();
@@ -17,7 +18,8 @@ export default function Home() {
     custom:<Menu_CustomMode/>,
     campaign:<Menu_CampaignStage/>,
     modeSelect:<Menu_GameModeSelect/>,
-    levelSelect:<Menu_LevelSelect/>
+    levelSelect:<Menu_LevelSelect/>,
+    history:<Menu_History/>
   }
   const [activeMenu,setActiveMenu] = useState('');
   
@@ -128,7 +130,7 @@ function Menu_Main(){
         <p className="sub-title">Memory Card Game <span>✦</span> Website Design by <a href="https://github.com/shubamium">Shubamium</a> <span>✦</span> Astrology Themed</p>
           <div className="menu">
             <StyledMenuButton onClick={()=>{showMenu('modeSelect')}}>✧ Start ✧</StyledMenuButton>
-            <StyledMenuButton>Leaderboard</StyledMenuButton>
+            <StyledMenuButton onClick={()=>{showMenu('history')}}>History</StyledMenuButton>
             <StyledMenuButton>About</StyledMenuButton>
           </div>
       </VStack>
@@ -171,6 +173,71 @@ function Menu_CustomMode(){
       <h2 className="title">Custom Mode</h2>
       <GameStartForm onSubmit={startGame} backButton={()=><StyledButton onClick={()=>{showMenu('modeSelect')}}>Back</StyledButton>}></GameStartForm>
     </StyledCustomMode>
+  )
+}
+
+const StyledHistory = styled(StyledMenuPanel)`
+  display:flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1em;
+
+  & .leader-list{
+    background-color: #0f0e10;
+    width:100%;
+    display:flex;
+    flex-direction: column;
+    padding:2em;
+    border-radius:2em;
+    gap:1em;
+
+    & .row{
+      background:#16161a;
+      width:100%;
+      border-radius: 2em;
+      padding:.5em 1em;
+      display: grid;
+      grid-template-columns:40px 1fr 1fr 1fr;
+      gap: 1em;
+    }
+  }
+
+`
+function Menu_History(){
+  const {showMenu,navigate} = useMenuNavigate();
+  const {pageSkip,setPageSkip} = useState(0);
+
+  const [leaderList,setLeaderList] = useState([]);
+  useEffect(()=>{
+
+    async function getData(pageSkip){
+      const dbData = await loadData(pageSkip);
+      setLeaderList(dbData);
+    }
+    getData()
+    
+  },[pageSkip]);
+
+
+  function renderLeaderList(){
+    return leaderList.map((data)=>{
+      return(
+        <div className="row">
+            <img src="" alt="" />
+            <p>{data.name}</p>
+        </div>
+      )
+    })
+  }
+  return (
+    <StyledHistory>
+      <h2 className="title">History</h2>
+      <VStack className="leader-list">
+        {leaderList && renderLeaderList()}
+      </VStack>
+      <BackButton onClick={()=>{showMenu('')}}/>
+      
+    </StyledHistory>
   )
 }
 
