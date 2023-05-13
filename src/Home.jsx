@@ -381,7 +381,34 @@ function Menu_LevelSelect(){
 
 
 const StyledAbout = styled(StyledMenuPanel)`
+  & .title{
+    letter-spacing: 15px;
+    font-size: 2rem;
+    animation: inflate 4s infinite;
+  }
+ 
+  & ol,p{
+    margin:1em auto;
+    color: #555779;
+    padding: 2em;
+    max-width: 80%;
+    background-color: #0c0d10;
+    border-radius:.2em;
+  }
+  & p{
+    text-indent: 5em;
+   
+  }
+  & ol{
+    color:#818140;
+    font-family: var(--fontMain);
+    max-width: 70%;
 
+    & li{
+      margin:1em;
+    }
+    margin-bottom: 50px;
+  }
 `
 function Menu_About(){
   const {showMenu,navigate} = useMenuNavigate();
@@ -390,20 +417,26 @@ function Menu_About(){
   }
 
   return (
-    <StyledCustomMode>
-      <h2 className="title">About</h2>
-      <p>Welcome to <b>Megistus</b>, an astrology-themed card memorization game that will test your memory skills and knowledge of astrology symbols! In this game, you'll be tasked with memorizing a deck of cards that features different astrology symbols. Your goal is to pick a pair of cards and reveal them. If the cards match, they will stay revealed until all cards have been matched.</p>
-      
-      <h2>How To Play</h2>
-      <ol>
-        <li>Start by picking a game mode, you can go through the campaign or pick the difficulty on custom mode.</li>
-        <li>Flip over any two cards by clicking them to reveal their astrology symbols. If the symbols on the cards match, the cards will stay revealed. If they don't match, remember the symbols and their location and try again.</li>
-        <li>Continue revealing pairs of cards until all cards have been matched.</li>
-        <li>Keep track of the time it takes you to match all the cards. Try to beat your previous times and challenge your friends to see who can match all the cards the fastest. </li>
-        <li>Enjoy the game and have fun!</li>
-      </ol>
+    <StyledAbout>
+       <div className="content">
+        <div className="about">
+            <h2 className="title">About</h2>
+            <p>Welcome to <b>Megistus</b>, an astrology-themed card memorization game that will test your memory skills and knowledge of astrology symbols! In this game, you'll be tasked with memorizing a deck of cards that features different astrology symbols. Your goal is to pick a pair of cards and reveal them. If the cards match, they will stay revealed until all cards have been matched.</p>
+            
+          </div>
+        <div className="howto">
+            <h2 className="title">How To Play</h2>
+            <ol>
+              <li>Start by picking a game mode, you can go through the campaign or pick the difficulty on custom mode.</li>
+              <li>Flip over any two cards by clicking them to reveal their astrology symbols. If the symbols on the cards match, the cards will stay revealed. If they don't match, remember the symbols and their location and try again.</li>
+              <li>Continue revealing pairs of cards until all cards have been matched.</li>
+              <li>Keep track of the time it takes you to match all the cards. Try to beat your previous times and challenge your friends to see who can match all the cards the fastest. </li>
+              <li>Enjoy the game and have fun!</li>
+            </ol>
+        </div>
+       </div>
       <BackButton onClick={()=>{showMenu('')}}></BackButton>
-    </StyledCustomMode>
+    </StyledAbout>
   )
 }
 
