@@ -289,7 +289,7 @@ function Menu_History(){
       )
     })
   }
-
+  const pageNumber = pageSkip === 0 ? 1 : (pageSkip/5)+1;
   function changePage(page){
     setPageSkip((prev)=>{
       let res = prev + page;
@@ -303,9 +303,10 @@ function Menu_History(){
       <VStack className="leader-list">
         {leaderList && renderLeaderList()}
       </VStack>
-      <HStack>
+      <HStack align={'center'}>
         {pageSkip !== 0 && <StyledMenuButton disabled={!interactable} onClick={()=>{changePage(-5)}}>Prev</StyledMenuButton> }
-       {leaderList.length > 0 && <StyledMenuButton disabled={!interactable} onClick={()=>{changePage(5)}}>Next</StyledMenuButton>}
+        <p>{pageNumber}</p>
+        {leaderList.length > 0 && <StyledMenuButton disabled={!interactable} onClick={()=>{changePage(5)}}>Next</StyledMenuButton>}
       </HStack>
       <BackButton onClick={()=>{showMenu('')}}/>
       
