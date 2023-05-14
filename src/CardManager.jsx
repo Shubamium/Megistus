@@ -132,7 +132,7 @@ function CardManager({onWin,cards,cardSet, hasStarted}) {
   // },[]);
   useEffect(()=>{
       if(hasStarted){
-        animate('div',{scaleX:[0,1]},{duration:'.2',delay:stagger(0.03),ease:'linear'});
+        animate('div',{scaleX:[-1,1]},{duration:'.2',delay:stagger(0.03),ease:'linear'});
       }
   },[hasStarted]);
   function renderCards(set){ 

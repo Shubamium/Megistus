@@ -20,7 +20,6 @@ const StyledCard = styled.div`
   flex-direction:column;
   border-radius: 1em;
   text-align: center;
-
   padding-inline:1.4em;
   gap:1em;
   position:relative;
@@ -162,7 +161,7 @@ export default function Card({
   let cardStatus = _status.join('');
   
   return (
-    <motion.div initial={{scale:-1}} ref={scope}>
+    <motion.div ref={scope}>
       <StyledCard  accent={accentColor} solved={isSolved} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
           {cardImage && // style={slotState > 0 ? imgVisible : imgHidden}
           <img src={cardImage} className={'card-image' + ' ' + (slotState > 0 ? 'revealed' : '')}></img>}
