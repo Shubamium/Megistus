@@ -189,16 +189,21 @@ function Timer({countUp,countDown,mode}) {
   
 
   let timerElement = null;
+  let animation = {
+    initial:{opacity:0,translateY:'100px'}, 
+    animate:{translateY:'0px'},
+    whileInView:{opacity:1}
+  };
   if(mode === 'timed'){
-     timerElement = <p>꧁𓊈𒆜{getTime && getTime(countUp.elapsed)}𒆜𓊉꧂</p>
+     timerElement = <motion.p {...animation}>꧁𓊈𒆜{getTime && getTime(countUp.elapsed)}𒆜𓊉꧂</motion.p>
   }else if(mode === 'attack'){
-     timerElement = <p>꧁𓊈𒆜{getTime && getTime(countDown.elapsed)}𒆜𓊉꧂</p>
+     timerElement = <motion.p {...animation}>꧁𓊈𒆜{getTime && getTime(countDown.elapsed)}𒆜𓊉꧂</motion.p>
   }
 
   let sideTimer = (
-    <div className="side-timer">
+    <motion.div initial={{opacity:0,bottom:'-5vh'}} animate={{opacity:1,bottom:'5vh'}} exit={{opacity:0,bottom:'-5vh'}} className="side-timer">
       {timerElement}
-    </div>
+    </motion.div>
   );
   
   function handleScroll(e){
@@ -217,7 +222,9 @@ function Timer({countUp,countDown,mode}) {
 
   return <div className="timer">
     {timerElement}
-    {sideTime && sideTimer}
+    <AnimatePresence>
+       {sideTime && sideTimer}
+    </AnimatePresence>
   </div>;
 }
 
