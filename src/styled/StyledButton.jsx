@@ -1,6 +1,7 @@
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
-const StyledButton = styled.button`
+const StyledButton = styled(motion.button)`
     padding: .4em 1.2em;
     border: none;
     border-radius: 50px;

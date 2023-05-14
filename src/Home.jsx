@@ -10,7 +10,7 @@ import { loadData } from "./util/db";
 import CardSet from "./cards/CardSet";
 import StyledInput from "./styled/StyledInput";
 import { UserContext } from "./context/UsernameContext";
-
+import { AnimatePresence, motion, stagger, useAnimate } from "framer-motion";
 
 const MenuContext = createContext();
 const LevelContext = createContext();
@@ -50,11 +50,19 @@ export default function Home() {
 }
 
 function MenuRenderer({route,activeMenu}){
+  const active = activeMenu === '' ? 'index': activeMenu;
   const toRender = route[activeMenu] ? route[activeMenu] : route['index'];
+  // if(activeMenu === '') return route['index'];
   return (
-    <>
-    {route && toRender}
-    </>    
+    <AnimatePresence mode="wait">
+         {Object.entries(route).map(([key,menu]) => (key === active
+                    && (
+                      <motion.div key={key} initial={{opacity:0}} transition={{ease:'linear',duration:'.2'}} animate={{opacity:1,scale:1}} exit={{opacity:0}}>
+                            {menu}
+                      </motion.div>
+          )))
+        }
+    </AnimatePresence>    
   )
 }
 
@@ -324,6 +332,9 @@ function Menu_History(){
   )
 }
 
+
+const staggerMenuItems = stagger(0.2);
+
 function Menu_CampaignStage(){
   const {showMenu,navigate} = useMenuNavigate();
   const {handleSelectLevel} = useContext(LevelContext);
@@ -332,16 +343,20 @@ function Menu_CampaignStage(){
     showMenu('levelSelect');
   }
 
+  const [scope,animate] = useAnimate();
+  useEffect(()=>{
+    animate('button',{scale:1},{delay:staggerMenuItems,ease:'easeOut'});
+  },[]);
+
   return (
     <StyledCustomMode>
       <h2 className="title">Campaign</h2>
-      <VStack>
-        <StyledMenuButton onClick={()=>{handleSelectStage('astro',1)}}>Stage 1 - Astrology</StyledMenuButton>
-        <StyledMenuButton onClick={()=>{handleSelectStage('greek',2)}}>Stage 2 - Greek</StyledMenuButton>
-        <StyledMenuButton onClick={()=>{handleSelectStage('cyrilic',3)}}>Stage 3 - Cyrilic</StyledMenuButton>
-        <StyledMenuButton onClick={()=>{handleSelectStage('japan',4)}}>Stage 4 - Japanese</StyledMenuButton>
-        <StyledMenuButton onClick={()=>{handleSelectStage('korean',5)}}>Stage 5 - Korean</StyledMenuButton>
-        <StyledMenuButton>Final Stage</StyledMenuButton>
+      <VStack ref={scope}>
+          <StyledMenuButton initial={{scale:0}}  onClick={()=>{handleSelectStage('astro',1)}}>Stage 1 - Astrology</StyledMenuButton>
+          <StyledMenuButton initial={{scale:0}}  onClick={()=>{handleSelectStage('greek',2)}}>Stage 2 - Greek</StyledMenuButton>
+          <StyledMenuButton initial={{scale:0}}  onClick={()=>{handleSelectStage('cyrilic',3)}}>Stage 3 - Cyrilic</StyledMenuButton>
+          <StyledMenuButton initial={{scale:0}}  onClick={()=>{handleSelectStage('japan',4)}}>Stage 4 - Japanese</StyledMenuButton>
+          <StyledMenuButton initial={{scale:0}}  onClick={()=>{handleSelectStage('korean',5)}}>Stage 5 - Korean</StyledMenuButton>
         <StyledMenuButton onClick={()=>{showMenu('modeSelect')}}>Back</StyledMenuButton>
       </VStack>
     </StyledCustomMode>
