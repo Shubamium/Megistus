@@ -85,7 +85,7 @@ export default function GameStartForm({onSubmit,backButton}) {
         <VStack style={{width:'50%'}}>
             <HStack align={'center'} justify={'stretch'}>
                 <label htmlFor="pair">Pair Count:</label>
-                <StyledInput type="number" min="0" max='49git' required ref={pairCount} placeholder="Pair count. . ." />
+                <StyledInput type="number" min="0" max='49' required ref={pairCount} placeholder="Pair count. . ." />
             </HStack>
             <HStack align={'center'} justify={'stretch'}>
                 <label htmlFor="pair">Difficulty:</label>
