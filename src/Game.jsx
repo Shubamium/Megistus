@@ -190,8 +190,8 @@ function Timer({countUp,countDown,mode}) {
 
   let timerElement = null;
   let animation = {
-    initial:{opacity:0,translateY:'100px'}, 
-    animate:{translateY:'0px'},
+    initial:{opacity:0,translateY:'-10vh'}, 
+    animate:{translateY:'0vh'},
     whileInView:{opacity:1}
   };
   if(mode === 'timed'){

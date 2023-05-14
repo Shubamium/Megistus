@@ -277,6 +277,8 @@ function Menu_History(){
 
   const [leaderList,setLeaderList] = useState(null);
   const [interactable,setInteractable] = useState(true);
+
+  const [scope,animate] = useAnimate();
   useEffect(()=>{
 
     async function getData(pageSkip){
@@ -288,7 +290,12 @@ function Menu_History(){
     
   },[pageSkip]);
 
-
+  useEffect(()=>{
+    if(leaderList && leaderList.length > 0){
+      console.log('animating');
+      animate('div',{scaleY:[0,0.2,1]},{duration:0.5,ease:'linear',delay:stagger(0.2)});
+    }
+  },[leaderList]);
   function renderLeaderList(){
     return leaderList.map((data,index)=>{
       return(
@@ -317,8 +324,10 @@ function Menu_History(){
   return (
     <StyledHistory>
       <h2 className="title">History</h2>
-      <VStack className="leader-list">
-        {!leaderList && <p className="loading-message">Loading Data . . .</p> }
+      <VStack className="leader-list" ref={scope}>
+        <AnimatePresence >
+           {!leaderList && <motion.p exit={{opacity:0}} className="loading-message">Loading Data . . .</motion.p> }
+        </AnimatePresence>
         {leaderList && renderLeaderList()}
       </VStack>
       <HStack align={'center'}>
