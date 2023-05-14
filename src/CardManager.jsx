@@ -2,26 +2,28 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import styled, { css } from 'styled-components'
 import Card from './components/Card.jsx';
-import { AnimatePresence, useAnimate } from 'framer-motion';
+import { AnimatePresence, useAnimate,motion, stagger } from 'framer-motion';
 
 
 const StyledCards = styled.div`
-  /* background-color: purple; */
-  padding: 2em;
-  gap: 2em;
+  & .content{
+     /* background-color: purple; */
+    padding: 2em;
+    gap: 2em;
+    
+    /*
+    ----Flex
+    display: flex;
+    */
+    display:  grid;
   
-  /*
-  ----Flex
-  display: flex;
-  */
-  display:  grid;
- 
-  /* ${props => props.row || '3'} */
-  grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
-  width:80%;
-  overflow: auto;
-  margin: 1em auto;
-  
+    /* ${props => props.row || '3'} */
+    grid-template-columns: repeat(auto-fill,minmax(150px,1fr));
+    width:80%;
+    overflow: auto;
+    margin: 1em auto;
+    
+  }
 `;
 
 export const SLOT_STATE = {
@@ -33,7 +35,7 @@ export const SLOT_STATE = {
 
 
 
-function CardManager({onWin,cards,cardSet}) {
+function CardManager({onWin,cards,cardSet, hasStarted}) {
 
   const [slots,setSlots] = useState(cards || defaultSlot);
 
@@ -128,7 +130,11 @@ function CardManager({onWin,cards,cardSet}) {
   //     animate('div',{scale:[0,-1,0,1]});
   //   }
   // },[]);
-
+  useEffect(()=>{
+      if(hasStarted){
+        animate('div',{scaleX:[0,1]},{duration:'.2',delay:stagger(0.03),ease:'linear'});
+      }
+  },[hasStarted]);
   function renderCards(set){ 
 
     if(!slots) return <></>;
@@ -168,11 +174,10 @@ function CardManager({onWin,cards,cardSet}) {
   return (
     <>
       <StyledCards row={row || 3}>
-        <AnimatePresence>
-          {renderCards(cardSet)}
-        </AnimatePresence> 
+          <motion.div className='content' ref={scope}>
+            {renderCards(cardSet)}
+          </motion.div>
       </StyledCards>
-
       {/* <p>{JSON.stringify(slots)}</p> */}
       {/* <h2>Selected Slot</h2> */}
       {/* <p>{JSON.stringify(selectedSlot)}</p> */}

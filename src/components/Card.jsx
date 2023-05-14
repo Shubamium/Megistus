@@ -8,7 +8,7 @@ const slotStateToString = (currSlot) =>{
     return key[currSlot];
 };
 
-const StyledCard = styled(motion.div)`
+const StyledCard = styled.div`
   /* background-color: #444; */
   background-color: #1f1f25;
   background-color: ${props => props.solved && '#383841'};
@@ -140,7 +140,7 @@ export default function Card({
   const handleOnClick = () => {
     if (blockReveal) return;
     onReveal && onReveal();
-    animate(scope.current,{scaleX:[-1,1]},{duration:0.4,ease:'linear'});
+    animate(scope.current,{scaleX:[-1,1]},{duration:0.3,ease:'linear'});
   };
 
  
@@ -162,7 +162,7 @@ export default function Card({
   let cardStatus = _status.join('');
   
   return (
-    <motion.div ref={scope}>
+    <motion.div initial={{scale:-1}} ref={scope}>
       <StyledCard  accent={accentColor} solved={isSolved} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
           {cardImage && // style={slotState > 0 ? imgVisible : imgHidden}
           <img src={cardImage} className={'card-image' + ' ' + (slotState > 0 ? 'revealed' : '')}></img>}

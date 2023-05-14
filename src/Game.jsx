@@ -156,7 +156,7 @@ export default function Game() {
   return (
     <StyledGameLayout>
         {gameStateData.mode !== 'casual' && <Timer {...timerProps}/>}
-        <CardManager onWin={handleWin} cards={board || []} cardSet={currentSet} ></CardManager>
+        <CardManager onWin={handleWin} cards={board || []} cardSet={currentSet} hasStarted={hasStarted}></CardManager>
         <HStack justify={'end'} style={{margin:'2em'}}>
            <Link to={'/'}><StyledButton>Back</StyledButton></Link>
         </HStack>
@@ -252,9 +252,10 @@ function StartModal({onStart}){
     },1000);
   }
   return (
-      <StartDialog ref={modal} initial={{opacity:0}} transition={{duration:1}} animate={{opacity:1}} exit={{opacity:0}}>
+      <StartDialog ref={modal} initial={{opacity:0}} transition={{duration:.2}} animate={{opacity:1}} exit={{opacity:0}}>
         <h2 className="title">Game Start</h2>
-        <AnimatePresence>
+        <motion.p ref ={scope} initial={{scale:0}}  className="countdown">{hasStarted ? (cTimer <= 0 ? 'Go' : cTimer) : ''}</motion.p>
+        <AnimatePresence mode="wait">
             {!hasStarted && (
                 <motion.div exit={{opacity:0}} transition={{duration:1}}>
                   <HStack>
@@ -267,7 +268,6 @@ function StartModal({onStart}){
               ) 
             }
         </AnimatePresence>
-          <motion.p ref={scope} initial={{scale:0}}  className="countdown">{hasStarted ? (cTimer <= 0 ? 'Go' : cTimer) : ''}</motion.p>
         
       </StartDialog>
   )
