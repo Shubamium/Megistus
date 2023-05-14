@@ -16,6 +16,7 @@ import CardSet from "./cards/CardSet";
 import {saveData} from "./util/db";
 import { useContext } from "react";
 import { UserContext } from "./context/UsernameContext";
+import { AnimatePresence,motion, useAnimate } from "framer-motion";
 
 // Feature List
 // ------- Main Feature
@@ -159,7 +160,9 @@ export default function Game() {
         <HStack justify={'end'} style={{margin:'2em'}}>
            <Link to={'/'}><StyledButton>Back</StyledButton></Link>
         </HStack>
-        {!hasStarted && <StartModal onStart={handleStart}></StartModal>}
+        <AnimatePresence>
+          {!hasStarted && <StartModal onStart={handleStart}></StartModal>}
+        </AnimatePresence>
     </StyledGameLayout>
   )
 }
@@ -222,7 +225,10 @@ function StartModal({onStart}){
   const modal = useRef();
   const [cTimer,setCTimer] = useState(3);
   const [hasStarted,setHasStarted] = useState(false);
+
+  const [scope,animate] = useAnimate();
   const interval = useRef();
+
   useEffect(()=>{
     if(!modal.current.open){
       modal.current.showModal();
@@ -231,12 +237,11 @@ function StartModal({onStart}){
 
   useEffect(()=>{
     if(cTimer < 0){
-      onStart && onStart()
+      onStart && onStart();
+    }else{
+      animate(scope.current,{scale:[0,1]},{duration:.2});
     }
-    return ()=>{
-
-    }
-  },[cTimer])
+  },[cTimer]);
 
 
   function startCountdown(){
@@ -247,19 +252,23 @@ function StartModal({onStart}){
     },1000);
   }
   return (
-    <StartDialog ref={modal}>
-       <h2 className="title">Game Start</h2>
-        {!hasStarted ? (
-           <HStack>
-              <StyledButton onClick={startCountdown}>Start</StyledButton>
-              <Link to={'/'}>
-                <StyledButton>Go Back</StyledButton>
-              </Link>
-           </HStack>
-        ) :
-        <p className="countdown">{cTimer <= 0 ? 'Go' : cTimer}</p>
-        }
-       
-    </StartDialog>
+      <StartDialog ref={modal} initial={{opacity:0}} transition={{duration:1}} animate={{opacity:1}} exit={{opacity:0}}>
+        <h2 className="title">Game Start</h2>
+        <AnimatePresence>
+            {!hasStarted && (
+                <motion.div exit={{opacity:0}} transition={{duration:1}}>
+                  <HStack>
+                    <StyledButton onClick={startCountdown}>Start</StyledButton>
+                    <Link to={'/'}>
+                      <StyledButton>Go Back</StyledButton>
+                    </Link>
+                  </HStack>
+                </motion.div>
+              ) 
+            }
+        </AnimatePresence>
+          <motion.p ref={scope} initial={{scale:0}}  className="countdown">{hasStarted ? (cTimer <= 0 ? 'Go' : cTimer) : ''}</motion.p>
+        
+      </StartDialog>
   )
 }

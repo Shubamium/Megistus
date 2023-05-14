@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import styled from "styled-components";
 
 const StyledDialog = styled.dialog`
@@ -15,7 +16,7 @@ const StyledDialog = styled.dialog`
     }
 `;
 
-export const StyledEmptyDialog = styled.dialog`
+export const StyledEmptyDialog = styled(motion.dialog)`
     background-color: #373738;
 
     width: 100%;
