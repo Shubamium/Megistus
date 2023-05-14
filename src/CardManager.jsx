@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 import styled, { css } from 'styled-components'
 import Card from './components/Card.jsx';
+import { AnimatePresence, useAnimate } from 'framer-motion';
 
 
 const StyledCards = styled.div`
@@ -34,55 +35,6 @@ export const SLOT_STATE = {
 
 function CardManager({onWin,cards,cardSet}) {
 
-  const defaultSlot = [
-    {
-      id:24,
-      slotState:SLOT_STATE.SOLVED
-    },{
-      id:15,
-      slotState:0
-    },
-    {
-      id:12,
-      slotState:0
-    }
-    ,{
-      id:44,
-      slotState:0
-    }
-    ,{
-      id:13,
-      slotState:0
-    }
-    ,{
-      id:15,
-      slotState:0
-    }
-    ,{
-      id:13,
-      slotState:0
-    }
-    ,{
-      id:12,
-      slotState:0
-    }
-    ,{
-      id:44,
-      slotState:0
-    }
-    ,{
-      id:21,
-      slotState:0
-    }
-    ,{
-      id:21,
-      slotState:0
-    }
-    ,{
-      id:24,
-      slotState:0
-    }
-  ]
   const [slots,setSlots] = useState(cards || defaultSlot);
 
   const [selectedSlot,setSelectedSlot] = useState([]);
@@ -169,6 +121,14 @@ function CardManager({onWin,cards,cardSet}) {
     return toCheck.every((sloted) => sloted.slotState === SLOT_STATE.SOLVED);
   }
 
+ 
+  const [scope,animate] = useAnimate();
+  // useEffect(()=>{
+  //   if(scope && scope.current){
+  //     animate('div',{scale:[0,-1,0,1]});
+  //   }
+  // },[]);
+
   function renderCards(set){ 
 
     if(!slots) return <></>;
@@ -208,8 +168,9 @@ function CardManager({onWin,cards,cardSet}) {
   return (
     <>
       <StyledCards row={row || 3}>
-        {/* Add Default Set here later */}
-        {renderCards(cardSet)} 
+        <AnimatePresence>
+          {renderCards(cardSet)}
+        </AnimatePresence> 
       </StyledCards>
 
       {/* <p>{JSON.stringify(slots)}</p> */}
@@ -240,3 +201,55 @@ export default CardManager
 //   </div>
 // ];
 
+
+
+
+const defaultSlot = [
+  {
+    id:24,
+    slotState:SLOT_STATE.SOLVED
+  },{
+    id:15,
+    slotState:0
+  },
+  {
+    id:12,
+    slotState:0
+  }
+  ,{
+    id:44,
+    slotState:0
+  }
+  ,{
+    id:13,
+    slotState:0
+  }
+  ,{
+    id:15,
+    slotState:0
+  }
+  ,{
+    id:13,
+    slotState:0
+  }
+  ,{
+    id:12,
+    slotState:0
+  }
+  ,{
+    id:44,
+    slotState:0
+  }
+  ,{
+    id:21,
+    slotState:0
+  }
+  ,{
+    id:21,
+    slotState:0
+  }
+  ,{
+    id:24,
+    slotState:0
+  }
+]

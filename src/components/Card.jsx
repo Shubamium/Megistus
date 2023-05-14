@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import { SLOT_STATE } from "../CardManager";
 import styled, { css } from "styled-components";
+import { motion, useAnimate } from "framer-motion";
 
 const slotStateToString = (currSlot) =>{
     const key = Object.keys(SLOT_STATE);
     return key[currSlot];
 };
 
-const StyledCard = styled.div`
+const StyledCard = styled(motion.div)`
   /* background-color: #444; */
   background-color: #1f1f25;
   background-color: ${props => props.solved && '#383841'};
@@ -130,6 +131,8 @@ export default function Card({
   cardImage
 }) {
   const [_slotState, setSlotState] = useState(slotState || 0);
+
+  const [scope,animate] = useAnimate()
   useEffect(() => {
     setSlotState(_slotState);
   }, [slotState]);
@@ -137,6 +140,7 @@ export default function Card({
   const handleOnClick = () => {
     if (blockReveal) return;
     onReveal && onReveal();
+    animate(scope.current,{scaleX:[-1,1]},{duration:0.4,ease:'linear'});
   };
 
  
@@ -158,13 +162,15 @@ export default function Card({
   let cardStatus = _status.join('');
   
   return (
-    <StyledCard accent={accentColor} solved={isSolved} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
-        {cardImage && // style={slotState > 0 ? imgVisible : imgHidden}
-        <img src={cardImage} className={'card-image' + ' ' + (slotState > 0 ? 'revealed' : '')}></img>}
-        <p className='status'>Card {cardStatus}</p>
-        {(isSolved || isSelected) && <p className='cardId'>{cardId || 0}</p>}
-        <p className='state'>{slotState}</p>
-    </StyledCard>
+    <motion.div ref={scope}>
+      <StyledCard  accent={accentColor} solved={isSolved} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
+          {cardImage && // style={slotState > 0 ? imgVisible : imgHidden}
+          <img src={cardImage} className={'card-image' + ' ' + (slotState > 0 ? 'revealed' : '')}></img>}
+          <p className='status'>Card {cardStatus}</p>
+          {(isSolved || isSelected) && <p className='cardId'>{cardId || 0}</p>}
+          <p className='state'>{slotState}</p>
+      </StyledCard>
+    </motion.div>
   )
 }
 
