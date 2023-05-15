@@ -18,10 +18,10 @@ const route = createBrowserRouter([{
 }]);
 
 ReactDOM.createRoot(document.getElementById('root')).render(
-  // <React.StrictMode>
+  <React.StrictMode>
     <UserContextProvider>
       <RouterProvider router={route}>
       </RouterProvider>
     </UserContextProvider>
-  // </React.StrictMode>,
+  </React.StrictMode>,
 )
