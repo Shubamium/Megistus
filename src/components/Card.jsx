@@ -122,6 +122,16 @@ const StyledCard = styled.div`
  
 `;
 
+let accentColor = (slot)=>{
+  let color = '#3d60ff';
+  if (slot === SLOT_STATE.SELECTED) {
+      color = '#5d6278';
+  } else if (slot === SLOT_STATE.SOLVED) {
+      color = '#fdae1b';
+  }
+  return color;
+}
+
 export default function Card({
   onReveal,
   blockReveal,
@@ -129,12 +139,8 @@ export default function Card({
   slotState,
   cardImage
 }) {
-  const [_slotState, setSlotState] = useState(slotState || 0);
 
   const [scope,animate] = useAnimate()
-  useEffect(() => {
-    setSlotState(_slotState);
-  }, [slotState]);
 
   const handleOnClick = () => {
     if (blockReveal) return;
@@ -143,15 +149,7 @@ export default function Card({
   };
 
  
-  let accentColor = ()=>{
-    let color = '#3d60ff';
-    if (slotState === SLOT_STATE.SELECTED) {
-        color = '#5d6278';
-    } else if (slotState === SLOT_STATE.SOLVED) {
-        color = '#fdae1b';
-    }
-    return color;
-  }
+  
 
   const isSolved = slotState === SLOT_STATE.SOLVED;
   const isSelected = slotState === SLOT_STATE.SELECTED;
@@ -162,7 +160,7 @@ export default function Card({
   
   return (
     <motion.div initial={{scale:1}} ref={scope}>
-      <StyledCard  accent={accentColor} solved={isSolved} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
+      <StyledCard  accent={accentColor()} solved={isSolved} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
           {cardImage && // style={slotState > 0 ? imgVisible : imgHidden}
           <img src={cardImage} className={'card-image' + ' ' + (slotState > 0 ? 'revealed' : '')}></img>}
           <p className='status'>Card {cardStatus}</p>

@@ -94,6 +94,7 @@ export const getTime = (elapsed) => {
 export default function Game() {
   const [board,setBoard] = useState([]);
   const [hasStarted,setHasStarted] = useState(false);
+  const [solved,setSolved] = useState(0);
 
   const {state:gameStateData} = useLocation();
   const navigate = useNavigate();
@@ -108,7 +109,7 @@ export default function Game() {
 
   function onTimesUp(){
     // alert('Time is up');
-    const gameResult = {status:'Lose',time:getTime(countUp.elapsed),timeLeft:getTime(countDown.elapsed)};
+    const gameResult = {status:'Lose',time:getTime(countUp.elapsed),timeLeft:getTime(countDown.elapsed),solved:solved};
     navigate('/results',{state:{gameResult,...gameStateData}})
   }
  
@@ -124,10 +125,11 @@ export default function Game() {
   function initializeBoard(pCount){
     const slot = generateSlots(pCount,currentSet,gameStateData?.difficulty);
     setBoard(slot);
+    setSolved(0);
   }
 
   function handleWin(){
-    const gameResult = {status:'Win',time:getTime(countUp.elapsed)};
+    const gameResult = {status:'Win',time:getTime(countUp.elapsed),solved:solved};
     navigate('/results',{state:{gameResult,...gameStateData}})
     const date = new Date();
     const gameResultAPI = {
@@ -152,11 +154,15 @@ export default function Game() {
     setHasStarted(true);
   }
 
+  function handleSolve(){
+    setSolved(prev => prev+1);
+  }
+
   const timerProps = {countDown:countDown,countUp:countUp,mode:gameStateData?.mode}
   return (
     <StyledGameLayout>
         {gameStateData.mode !== 'casual' && <Timer {...timerProps}/>}
-        <CardManager onWin={handleWin} cards={board || []} cardSet={currentSet} hasStarted={hasStarted}></CardManager>
+        <CardManager onWin={handleWin} onSolve={handleSolve} cards={board || []} cardSet={currentSet} hasStarted={hasStarted}></CardManager>
         <HStack justify={'end'} style={{margin:'2em'}}>
            <Link to={'/'} style={{textDecoration:'none'}}><StyledButton> <MdArrowBack/>Back</StyledButton></Link>
         </HStack>

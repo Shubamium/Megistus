@@ -34,8 +34,7 @@ export const SLOT_STATE = {
 }
 
 
-
-function CardManager({onWin,cards,cardSet, hasStarted}) {
+function CardManager({onWin,cards,cardSet, hasStarted,onSolve}) {
 
   const [slots,setSlots] = useState(cards || defaultSlot);
 
@@ -94,6 +93,7 @@ function CardManager({onWin,cards,cardSet, hasStarted}) {
           // setCardState(selectedSlot[i].index,SLOT_STATE.SOLVED);
           tempSlot[selectedSlot[i].index].slotState = SLOT_STATE.SOLVED;
       }
+      onSolve && onSolve();
       if(checkWin(tempSlot)){
         setSelectedSlot(tempSlot);
         setTimeout(()=>{
@@ -187,74 +187,3 @@ function CardManager({onWin,cards,cardSet, hasStarted}) {
 export default CardManager
 
 
-// const cardName = <h2 className='cardName'>{cardId || 0}</h2>;
-// const renderCard =  [
-//   <div className='card_closed'>
-//       <p>Card Closed</p>
-//   </div>,
-//   <div className="card_opened">
-//     <p>Card Opened</p>
-//     {cardName}
-//   </div>,
-//   <div className="card_opened">
-//     {cardName}
-//     <p>Card Solved</p>
-//   </div>,
-//   <div className="card_selected">
-//     {cardName}
-//     <p>Selected</p>
-//   </div>
-// ];
-
-
-
-
-const defaultSlot = [
-  {
-    id:24,
-    slotState:SLOT_STATE.SOLVED
-  },{
-    id:15,
-    slotState:0
-  },
-  {
-    id:12,
-    slotState:0
-  }
-  ,{
-    id:44,
-    slotState:0
-  }
-  ,{
-    id:13,
-    slotState:0
-  }
-  ,{
-    id:15,
-    slotState:0
-  }
-  ,{
-    id:13,
-    slotState:0
-  }
-  ,{
-    id:12,
-    slotState:0
-  }
-  ,{
-    id:44,
-    slotState:0
-  }
-  ,{
-    id:21,
-    slotState:0
-  }
-  ,{
-    id:21,
-    slotState:0
-  }
-  ,{
-    id:24,
-    slotState:0
-  }
-]

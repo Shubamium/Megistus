@@ -34,6 +34,7 @@ export default function Results({location}) {
         <StyledResultPanel>
             <h2 className="title">Game {state.gameResult.status}</h2>
             <p>Time:{state.gameResult.time || '00:00:00'}</p>
+            <p>Card Solved:{state.gameResult.solved*2 || 'N/A'}</p>
             <p></p>
             <HStack>
                 <Link to={-1} style={{textDecoration:'none'}}><StyledButton ><FaRedo/> Retry</StyledButton></Link>
