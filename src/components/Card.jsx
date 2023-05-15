@@ -160,7 +160,7 @@ export default function Card({
   
   return (
     <motion.div initial={{scale:1}} ref={scope}>
-      <StyledCard  accent={accentColor()} solved={isSolved} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
+      <StyledCard accent={accentColor(slotState)} solved={isSolved} isShown={isSolved || isSelected} interactable={!blockReveal} onClick={handleOnClick}>
           {cardImage && // style={slotState > 0 ? imgVisible : imgHidden}
           <img src={cardImage} className={'card-image' + ' ' + (slotState > 0 ? 'revealed' : '')}></img>}
           <p className='status'>Card {cardStatus}</p>
