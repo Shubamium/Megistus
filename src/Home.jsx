@@ -11,7 +11,8 @@ import CardSet from "./cards/CardSet";
 import StyledInput from "./styled/StyledInput";
 import { UserContext } from "./context/UsernameContext";
 import { AnimatePresence, motion, stagger, useAnimate } from "framer-motion";
-
+import {SiAntdesign, SiAnydesk} from 'react-icons/si';
+import { MdOutlineArrowBack} from 'react-icons/md';
 const MenuContext = createContext();
 const LevelContext = createContext();
 
@@ -133,7 +134,7 @@ const StyledMainMenu = styled(StyledMenuPanel)`
     }
     
 `
-const BackButton = ({onClick})=><StyledMenuButton bgColor={"#2a1f3f73"} onClick={onClick}>Back</StyledMenuButton>;
+const BackButton = ({onClick})=><StyledMenuButton bgColor={"#2a1f3f73"} onClick={onClick}><MdOutlineArrowBack/> Back</StyledMenuButton>;
 
 function Menu_Main(){
   const {showMenu} = useMenuNavigate();
@@ -188,8 +189,8 @@ function Menu_GameModeSelect(){
       <VStack align={'center'}>
         <h2 className="title">Select the game mode:</h2>
         <div className="menu">
-          <StyledMenuButton onClick={()=>{showMenu('campaign')}}>Campaign</StyledMenuButton>
-          <StyledMenuButton onClick={()=>{showMenu('custom')}}>Custom</StyledMenuButton>
+          <StyledMenuButton onClick={()=>{showMenu('campaign')}}><SiAnydesk/> Campaign</StyledMenuButton>
+          <StyledMenuButton onClick={()=>{showMenu('custom')}}><SiAntdesign/> Custom</StyledMenuButton>
           <BackButton onClick={()=>{showMenu('')}}></BackButton>
         </div>
       </VStack>
@@ -212,7 +213,7 @@ function Menu_CustomMode(){
   return (
     <StyledCustomMode>
       <h2 className="title">Custom Mode</h2>
-      <GameStartForm onSubmit={startGame} backButton={()=><StyledButton onClick={()=>{showMenu('modeSelect')}}>Back</StyledButton>}></GameStartForm>
+      <GameStartForm onSubmit={startGame} backButton={()=><StyledButton onClick={()=>{showMenu('modeSelect')}}> <MdOutlineArrowBack/> Back</StyledButton>}></GameStartForm>
     </StyledCustomMode>
   )
 }
@@ -323,7 +324,7 @@ function Menu_History(){
   }
   return (
     <StyledHistory>
-      <h2 className="title">History</h2>
+      <h2 className="title">✦ History ✦</h2>
       <VStack className="leader-list" ref={scope}>
         <AnimatePresence >
            {!leaderList && <motion.p exit={{opacity:0}} className="loading-message">Loading Data . . .</motion.p> }
@@ -359,14 +360,14 @@ function Menu_CampaignStage(){
 
   return (
     <StyledCustomMode>
-      <h2 className="title">Campaign</h2>
+      <h2 className="title">✦ Campaign ✦</h2>
       <VStack ref={scope}>
           <StyledMenuButton initial={{scale:0}}  onClick={()=>{handleSelectStage('astro',1)}}>Stage 1 - Astrology</StyledMenuButton>
           <StyledMenuButton initial={{scale:0}}  onClick={()=>{handleSelectStage('greek',2)}}>Stage 2 - Greek</StyledMenuButton>
           <StyledMenuButton initial={{scale:0}}  onClick={()=>{handleSelectStage('cyrilic',3)}}>Stage 3 - Cyrilic</StyledMenuButton>
           <StyledMenuButton initial={{scale:0}}  onClick={()=>{handleSelectStage('japan',4)}}>Stage 4 - Japanese</StyledMenuButton>
           <StyledMenuButton initial={{scale:0}}  onClick={()=>{handleSelectStage('korean',5)}}>Stage 5 - Korean</StyledMenuButton>
-        <StyledMenuButton onClick={()=>{showMenu('modeSelect')}}>Back</StyledMenuButton>
+        <BackButton onClick={()=>{showMenu('modeSelect')}} style={{margin:'2em'}}><MdOutlineArrowBack/>  Back</BackButton>
       </VStack>
     </StyledCustomMode>
   )
@@ -397,7 +398,7 @@ function Menu_LevelSelect(){
             <StyledMenuButton bgColor="linear-gradient(160deg, #ffff50b2 0%, #2a1138 100%)" onClick={()=>{loadLevel(6)}}>EX - STAGE</StyledMenuButton>
             <StyledMenuButton bgColor="linear-gradient(160deg, #66ff50b1 0%,  #2a1138 100%)" onClick={()=>{loadLevel(7)}}>Zen Mode</StyledMenuButton>
         </HStack>
-        <StyledMenuButton onClick={()=>{showMenu('campaign')}} style={{margin:'2em'}}>Back</StyledMenuButton>
+        <BackButton onClick={()=>{showMenu('campaign')}} style={{margin:'2em'}}><MdOutlineArrowBack/>  Back</BackButton>
       </VStack>
     </StyledCustomMode>
   )
@@ -444,12 +445,12 @@ function Menu_About(){
     <StyledAbout>
        <div className="content">
         <div className="about">
-            <h2 className="title">About</h2>
+            <h2 className="title">✦ About ✦</h2>
             <p>Welcome to <b>Megistus</b>, an astrology-themed card memorization game that will test your memory skills and knowledge of astrology symbols! In this game, you'll be tasked with memorizing a deck of cards that features different astrology symbols. Your goal is to pick a pair of cards and reveal them. If the cards match, they will stay revealed until all cards have been matched.</p>
             
           </div>
         <div className="howto">
-            <h2 className="title">How To Play</h2>
+            <h2 className="title">✦ How To Play ✦</h2>
             <ol>
               <li>Start by picking a game mode, you can go through the campaign or pick the difficulty on custom mode.</li>
               <li>Flip over any two cards by clicking them to reveal their astrology symbols. If the symbols on the cards match, the cards will stay revealed. If they don't match, remember the symbols and their location and try again.</li>

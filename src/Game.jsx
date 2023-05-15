@@ -17,6 +17,8 @@ import {saveData} from "./util/db";
 import { useContext } from "react";
 import { UserContext } from "./context/UsernameContext";
 import { AnimatePresence,motion, useAnimate } from "framer-motion";
+import { FiPlay } from "react-icons/fi";
+import { MdArrowBack } from "react-icons/md";
 
 // Feature List
 // ------- Main Feature
@@ -158,7 +160,7 @@ export default function Game() {
         {gameStateData.mode !== 'casual' && <Timer {...timerProps}/>}
         <CardManager onWin={handleWin} cards={board || []} cardSet={currentSet} hasStarted={hasStarted}></CardManager>
         <HStack justify={'end'} style={{margin:'2em'}}>
-           <Link to={'/'}><StyledButton>Back</StyledButton></Link>
+           <Link to={'/'} style={{textDecoration:'none'}}><StyledButton> <MdArrowBack/>Back</StyledButton></Link>
         </HStack>
         <AnimatePresence>
           {!hasStarted && <StartModal onStart={handleStart}></StartModal>}
@@ -261,15 +263,15 @@ function StartModal({onStart}){
   return (
       <StartDialog ref={modal} initial={{opacity:0}} transition={{duration:.2}} animate={{opacity:1}} exit={{opacity:0}}>
         <h2 className="title">Game Start</h2>
-        <motion.p ref ={scope} initial={{scale:0}}  className="countdown">{hasStarted ? (cTimer <= 0 ? 'Go' : cTimer) : ''}</motion.p>
+        <motion.p ref ={scope} initial={{scale:0}}  className="countdown">{hasStarted ? (cTimer <= 0 ? 'Go!' : cTimer) : ''}</motion.p>
         <AnimatePresence mode="wait">
             {!hasStarted && (
                 <motion.div exit={{opacity:0}} transition={{duration:1}}>
                   <HStack>
-                    <StyledButton onClick={startCountdown}>Start</StyledButton>
-                    <Link to={'/'}>
-                      <StyledButton>Go Back</StyledButton>
+                    <Link to={'/'} style={{textDecoration:'none'}}>
+                      <StyledButton> <MdArrowBack/> Go Back</StyledButton>
                     </Link>
+                    <StyledButton onClick={startCountdown}>Start <FiPlay/> </StyledButton>
                   </HStack>
                 </motion.div>
               ) 

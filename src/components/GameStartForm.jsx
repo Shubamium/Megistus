@@ -5,7 +5,7 @@ import StyledInput from "../styled/StyledInput";
 import VStack from "../styled/layout/VStack";
 import HStack from "../styled/layout/HStack";
 import StyledSelect from "../styled/StyledSelect";
-
+import {FiPlay} from "react-icons/fi";
 
 const StyledGameStartForm = styled.form`
     display: flex;
@@ -117,8 +117,8 @@ export default function GameStartForm({onSubmit,backButton}) {
             
         </VStack>
         <HStack>
-            <StyledButton type="submit">Start</StyledButton>
             {backButton()}
+            <StyledButton type="submit">Start<FiPlay/> </StyledButton>
         </HStack>
     </StyledGameStartForm>
   )

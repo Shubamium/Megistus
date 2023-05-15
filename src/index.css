@@ -46,3 +46,7 @@ p{
     animation-delay: 1s;
     -webkit-animation: inflate 3s linear infinite;
 }
+
+a:has(button){
+    text-decoration: none;
+}

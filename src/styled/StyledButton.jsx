@@ -29,14 +29,24 @@ const StyledButton = styled(motion.button)`
         cursor:not-allowed;
     }
    
+    & svg{
+        height: 100%;
+    }
+    vertical-align: middle;
+    display: flex;
+    justify-content: center;
+    gap:.4em;
+    align-items: center;
+    
+    
 `
 
 export const StyledMenuButton = styled(StyledButton)`
     width:100%;
     white-space: nowrap;
-    display: block;
     position:relative;
     z-index: 4;
+    
     background:${props => props.bgColor};
     &:hover{
         scale:1.02;
