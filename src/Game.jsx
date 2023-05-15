@@ -102,8 +102,8 @@ export default function Game() {
   const usernameContext = useContext(UserContext);
   const [username,_] = usernameContext;
   
-  const countUp = false && useCountup();
-  const countDown = false && useCountdown(gameStateData.duration || 60,onTimesUp);
+  const countUp = useCountup();
+  const countDown =  useCountdown(gameStateData.duration || 60,onTimesUp);
   
   const currentSet = CardSet[gameStateData.cardStyle] || CardSet.astro;
 
