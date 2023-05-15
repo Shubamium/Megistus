@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { SLOT_STATE } from "../CardManager";
 import styled, { css } from "styled-components";
 import { motion, useAnimate } from "framer-motion";
@@ -132,24 +132,22 @@ let accentColor = (slot)=>{
   return color;
 }
 
-export default function Card({
+ function Card({
   onReveal,
   blockReveal,
   cardId,
   slotState,
-  cardImage
+  cardImage,
+  slot,
+  index
 }) {
 
   const [scope,animate] = useAnimate()
-
   const handleOnClick = () => {
     if (blockReveal) return;
-    onReveal && onReveal();
+    onReveal && onReveal(slot,index);
     animate(scope.current,{scaleX:[-1,1]},{duration:0.3,ease:'linear'});
   };
-
- 
-  
 
   const isSolved = slotState === SLOT_STATE.SOLVED;
   const isSelected = slotState === SLOT_STATE.SELECTED;
@@ -171,7 +169,7 @@ export default function Card({
   )
 }
 
-
+export default React.memo(Card)
 //   const [, setVisible] = useState(isVisible || false);
 //   useEffect(() => {
 //     setVisible(isVisible);

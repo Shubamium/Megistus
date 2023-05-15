@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import './App.css'
 import styled, { css } from 'styled-components'
 import Card from './components/Card.jsx';
@@ -81,7 +81,7 @@ function CardManager({onWin,cards,cardSet, hasStarted,onSolve}) {
     return true;
   }
  
-  async function compareCards(){
+  const compareCards = async()=>{
     console.log('comparing Card');
     if(selectedSlot[0].id === selectedSlot[1].id){
       // Card is the same
@@ -118,7 +118,7 @@ function CardManager({onWin,cards,cardSet, hasStarted,onSolve}) {
   function setCardState(id,toSet){
     var updated = [];
     setSlots(prev => {
-      const updatedSlot = prev.map(prevMap => prevMap);
+      const updatedSlot = [...prev];
       updatedSlot[id] = {...prev[id],slotState:toSet};
       updated = updatedSlot;
       return updatedSlot;
@@ -126,7 +126,8 @@ function CardManager({onWin,cards,cardSet, hasStarted,onSolve}) {
     return updated;
   }
 
-  const handleReveal = (slot,index)=>{
+  
+  const handleReveal = useCallback((slot,index)=>{
     if(slot.slotState === SLOT_STATE.SOLVED){
       return;
     }
@@ -137,18 +138,17 @@ function CardManager({onWin,cards,cardSet, hasStarted,onSolve}) {
       }
     }
     setCardState(index,slot.slotState === SLOT_STATE.OPEN ? SLOT_STATE.CLOSED : SLOT_STATE.OPEN);
-  }
-
+  },[]);
   const renderCards = useCallback((set)=>{ 
 
     if(!slots) return <></>;
 
     return slots.map((slot,index)=> {
-      const onReveal = ()=>{handleReveal(slot,index)};
+      
       const isSelectedAlready = slot.slotState === SLOT_STATE.SELECTED;
       const isSolved = slot.slotState === SLOT_STATE.SOLVED;
       const selectedSlotIsFull = selectedSlot.length >= 2;
-      return <Card cardImage={set[slot.id]} key={index} onReveal={onReveal} slotState={slot.slotState} blockReveal={isSelectedAlready || selectedSlotIsFull || isSolved} cardId={slot.id}></Card>
+      return <Card cardImage={set[slot.id]} slot={slot} key={index} index={index} onReveal={handleReveal} slotState={slot.slotState} blockReveal={isSelectedAlready || selectedSlotIsFull || isSolved} cardId={slot.id}></Card>
     });
 
   },[slots,selectedSlot]);
@@ -163,6 +163,5 @@ function CardManager({onWin,cards,cardSet, hasStarted,onSolve}) {
       </StyledCards>
   )
 }
-export default CardManager
-
+export default React.memo(CardManager)
 

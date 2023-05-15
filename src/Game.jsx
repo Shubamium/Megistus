@@ -102,8 +102,8 @@ export default function Game() {
   const usernameContext = useContext(UserContext);
   const [username,_] = usernameContext;
   
-  const countUp = useCountup();
-  const countDown = useCountdown(gameStateData.duration || 60,onTimesUp);
+  const countUp = false && useCountup();
+  const countDown = false && useCountdown(gameStateData.duration || 60,onTimesUp);
   
   const currentSet = CardSet[gameStateData.cardStyle] || CardSet.astro;
 
@@ -115,7 +115,6 @@ export default function Game() {
  
   useEffect(()=>{
     if(gameStateData){
-      console.log(gameStateData);
       initializeBoard(gameStateData.pairCount);
     }else{
       navigate('/');
@@ -147,9 +146,9 @@ export default function Game() {
    
   const handleStart = ()=>{
     // if(gameStateData.mode === 'timed'){
-    countUp.startTimer();
+    countUp && countUp.startTimer();
     if(gameStateData?.mode === 'attack'){
-      countDown.startTimer();
+      countDown && countDown.startTimer();
     }
     setHasStarted(true);
   }
@@ -158,10 +157,10 @@ export default function Game() {
     setSolved(prev => prev+1);
   }
 
-  const timerProps = {countDown:countDown,countUp:countUp,mode:gameStateData?.mode}
+  // const timerProps = {countDown:countDown,countUp:countUp,mode:gameStateData?.mode}
   return (
     <StyledGameLayout>
-        {gameStateData.mode !== 'casual' && <Timer {...timerProps}/>}
+        {/* {gameStateData.mode !== 'casual' && <Timer {...timerProps}/>} */}
         <CardManager onWin={handleWin} onSolve={handleSolve} cards={board || []} cardSet={currentSet} hasStarted={hasStarted}></CardManager>
         <HStack justify={'end'} style={{margin:'2em'}}>
            <Link to={'/'} style={{textDecoration:'none'}}><StyledButton> <MdArrowBack/>Back</StyledButton></Link>
