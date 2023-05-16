@@ -23,10 +23,10 @@ import { Timer } from "./components/Timer";
 
 // Feature List
 // ------- Main Feature
-// Initialized Board with how many cards
-// Initialized Board with difficulty (How many of the set is used)
-// Timed + Time Attack
-// Level 
+// (V) Initialized Board with how many cards
+// (V) Initialized Board with difficulty (How many of the set is used)
+// (V) Timed + Time Attack
+// (V) Level 
 //
 
 // ------ Design Example
@@ -34,7 +34,7 @@ import { Timer } from "./components/Timer";
 
 // ------ Extra
 // Custom Decks
-// Leaderboard + Sign Up
+// (V-)Leaderboard + Sign Up
 
 
 const StyledGameLayout = styled.div`

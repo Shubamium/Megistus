@@ -139,6 +139,7 @@ function CardManager({onWin,cards,cardSet, hasStarted,onSolve}) {
     }
     setCardState(index,slot.slotState === SLOT_STATE.OPEN ? SLOT_STATE.CLOSED : SLOT_STATE.OPEN);
   },[]);
+  
   const renderCards = useCallback((set)=>{ 
 
     if(!slots) return <></>;
