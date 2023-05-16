@@ -157,10 +157,10 @@ export default function Game() {
     setSolved(prev => prev+1);
   }
 
-  // const timerProps = {countDown:countDown,countUp:countUp,mode:gameStateData?.mode}
+  const timerProps = {countDown:countDown,countUp:countUp,mode:gameStateData?.mode}
   return (
     <StyledGameLayout>
-        {/* {gameStateData.mode !== 'casual' && <Timer {...timerProps}/>} */}
+        {gameStateData.mode !== 'casual' && <Timer {...timerProps}/>}
         <CardManager onWin={handleWin} onSolve={handleSolve} cards={board || []} cardSet={currentSet} hasStarted={hasStarted}></CardManager>
         <HStack justify={'end'} style={{margin:'2em'}}>
            <Link to={'/'} style={{textDecoration:'none'}}><StyledButton> <MdArrowBack/>Back</StyledButton></Link>
@@ -171,7 +171,6 @@ export default function Game() {
     </StyledGameLayout>
   )
 }
-
 
 const StartDialog = styled(StyledEmptyDialog)`
   text-align: center;
