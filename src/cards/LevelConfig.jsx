@@ -34,7 +34,7 @@ const levelBase = [
         difficulty: 4,
         mode:"attack",
         levelType:'campaign - EX',
-        duration:600
+        duration:420
     },
     {
         pairCount: 50,
